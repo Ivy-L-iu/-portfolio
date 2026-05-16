@@ -1,0 +1,2851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ivy Liu — Product Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Inter:wght@400;500;700&family=Wix+Madefor+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #E8F5E9;
+      --text:       #006400;
+      --muted:      rgba(0, 100, 0, 0.6);
+      --label:      #2d5a2d;
+      --border:     rgba(0, 100, 0, 0.15);
+      --font:       'Wix Madefor Display', sans-serif;
+      --font-head:  'Space Grotesk', sans-serif;
+      --grid-color: rgba(0, 100, 0, 0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    a, button { cursor: none; }
+
+
+    /* ============================================================
+       NAV
+    ============================================================ */
+    .main-nav {
+      position: relative;
+      z-index: 100;
+      width: 100%;
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-year {
+      font-family: var(--font-head);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      font-weight: 500;
+      color: rgba(0, 100, 0, 0.55);
+    }
+
+    .nav-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 44px;
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-item-works { position: relative; }
+
+    .nav-link {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+      color: var(--text);
+      padding: 4px 0;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: #059669;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after { width: 100%; }
+    .nav-item-works:hover > .nav-link::after { width: 100%; }
+
+    .nav-link-text, .nav-link-arrow { transition: color 0.25s ease; }
+    .nav-link:hover .nav-link-text,
+    .nav-link:hover .nav-link-arrow,
+    .nav-item-works:hover > .nav-link .nav-link-text,
+    .nav-item-works:hover > .nav-link .nav-link-arrow { color: #059669; }
+
+    .nav-link-arrow { font-size: 9px; }
+
+    .nav-dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      background: #fff;
+      border: 1px solid rgba(0, 100, 0, 0.12);
+      border-radius: 4px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.09);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+      min-width: 230px;
+      z-index: 200;
+    }
+
+    .nav-item-works:hover .nav-dropdown { opacity: 1; visibility: visible; }
+
+    .nav-dropdown-item {
+      display: block;
+      padding: 12px 20px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #006400;
+      text-decoration: none;
+      transition: background 0.18s ease, color 0.18s ease;
+      letter-spacing: 0.02em;
+      font-family: var(--font-head);
+    }
+
+    .nav-dropdown-item:hover { background: #059669; color: #fff; }
+
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero-viewport {
+      position: relative;
+      height: 100vh;
+      min-height: 640px;
+      overflow: hidden;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-size: 60px 60px;
+      background-image:
+        linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, black 55%, transparent 100%);
+      mask-image: radial-gradient(circle at 50% 50%, black 55%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero-flowers {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .hero-flower {
+      position: absolute;
+    }
+
+    /* Heliotropism — title flowers need GPU layer for translate+rotate */
+    .hero-i { will-change: translate, rotate; }
+
+    /* Aura canvas — warm sunlight pool, sits between grid and flowers */
+    #helio-aura {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Garden hint — pinned to the blossom of the tall title flower */
+    .garden-hint {
+      position: absolute;
+      left: calc(100% + 4px);
+      top: 8.7vw;               /* blossom sits ~8.67vw down due to xMidYMax */
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+      transform: rotate(-16deg);
+      transform-origin: 0% 50%;  /* pivot at left-center, arrow stays at blossom height */
+    }
+
+    .garden-hint.visible { opacity: 1; }
+
+    .garden-hint-arrow {
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .garden-hint-text {
+      font-family: var(--font-head);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: rgba(0,100,0,0.48);
+      white-space: nowrap;
+    }
+
+    .pixel-art { image-rendering: pixelated; shape-rendering: crispEdges; }
+
+    @keyframes float-slow   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+    @keyframes float-medium { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-15px)} }
+    @keyframes float-fast   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+    .float-slow   { animation: float-slow   6s ease-in-out infinite; }
+    .float-medium { animation: float-medium 5s ease-in-out infinite; }
+    .float-fast   { animation: float-fast   4s ease-in-out infinite; }
+
+    .delay-100  { animation-delay:  100ms; }
+    .delay-200  { animation-delay:  200ms; }
+    .delay-300  { animation-delay:  300ms; }
+    .delay-500  { animation-delay:  500ms; }
+    .delay-700  { animation-delay:  700ms; }
+    .delay-1000 { animation-delay: 1000ms; }
+
+    .hero-main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 10;
+      padding-bottom: 40px;
+    }
+
+    .hero-title-wrap { position: relative; }
+
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(72px, 15vw, 200px);
+      font-weight: 500;
+      letter-spacing: -0.07em;
+      color: #064e3b;
+      display: flex;
+      align-items: flex-end;
+      line-height: 1;
+      user-select: none;
+      filter: drop-shadow(0 2px 20px rgba(6,78,59,0.12));
+    }
+
+    .hero-i {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .hero-i-tall  { width: 4vw; height: 22vw; margin: 0 0.4vw; }
+    .hero-i-short { width: 4vw; height: 15vw; margin: 0 0.4vw; }
+
+    .hero-i svg { width: 100%; height: 100%; overflow: visible; }
+
+    .hero-tag {
+      position: absolute;
+      font-family: var(--font-head);
+      font-size: clamp(11px, 1.15vw, 14px);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #064e3b;
+      text-transform: uppercase;
+      background: rgba(6,78,59,0.08);
+      border: 1px solid rgba(6,78,59,0.16);
+      padding: 5px 13px;
+      border-radius: 100px;
+      opacity: 0;
+      animation: fadeInUp 1s ease-out forwards;
+    }
+
+    .hero-tag-top    { top: -2em; left: 0;  animation-delay: 1s;   }
+    .hero-tag-bottom { bottom: -1.8em; right: 0; animation-delay: 1.5s; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Pixel Rain: each rect in both title flowers drops in from above,
+       staggered 60ms apart. Stem bottom-to-top first, then leaves,
+       center, then petals burst in from their four cardinal directions. ── */
+    @keyframes heroTextIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0);   }
+    }
+    @keyframes pxFall  { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)}  }
+    @keyframes pxRise  { from{opacity:0;transform:translateY( 20px)} to{opacity:1;transform:translateY(0)}  }
+    @keyframes pxRight { from{opacity:0;transform:translateX(-20px)} to{opacity:1;transform:translateX(0)}  }
+    @keyframes pxLeft  { from{opacity:0;transform:translateX( 20px)} to{opacity:1;transform:translateX(0)}  }
+    @keyframes pxTL    { from{opacity:0;transform:translate(-14px,-14px)} to{opacity:1;transform:translate(0,0)} }
+    @keyframes pxTR    { from{opacity:0;transform:translate( 14px,-14px)} to{opacity:1;transform:translate(0,0)} }
+    @keyframes pxBL    { from{opacity:0;transform:translate(-14px, 14px)} to{opacity:1;transform:translate(0,0)} }
+    @keyframes pxBR    { from{opacity:0;transform:translate( 14px, 14px)} to{opacity:1;transform:translate(0,0)} }
+    .px       { animation-duration:300ms; animation-timing-function:cubic-bezier(0.22,0.61,0.36,1); animation-fill-mode:both; }
+    .px-fall  { animation-name:pxFall;  }
+    .px-rise  { animation-name:pxRise;  }
+    .px-right { animation-name:pxRight; }
+    .px-left  { animation-name:pxLeft;  }
+    .px-tl    { animation-name:pxTL;    }
+    .px-tr    { animation-name:pxTR;    }
+    .px-bl    { animation-name:pxBL;    }
+    .px-br    { animation-name:pxBR;    }
+
+    /* Text fades in as petals start blooming */
+    .hero-title > span {
+      display: inline-block;
+      animation: heroTextIn 560ms ease-out 720ms both;
+    }
+    /* Tags follow after both flowers are complete */
+    .hero-tag-top    { animation-delay: 1050ms; }
+    .hero-tag-bottom { animation-delay: 1280ms; }
+
+    .hero-footer-bar {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%;
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      z-index: 30;
+      font-family: var(--font-head);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: rgba(0, 100, 0, 0.55);
+    }
+
+    .hf-center {
+      color: #059669;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    .hf-right { text-align: right; display: flex; flex-direction: column; gap: 4px; }
+
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+
+
+    /* ============================================================
+       STACKING CARDS
+    ============================================================ */
+    .cards-outer {
+      height: 520vh;
+      background: var(--bg);
+      padding: 0 56px;
+    }
+
+    .card-shell {
+      position: sticky;
+      top: calc(var(--i, 0) * 40px + 56px);
+      z-index: calc(var(--i, 0) + 1);
+      width: 100%;
+      max-width: 1300px;
+      margin: 0 auto;
+      height: calc(100vh - (var(--i, 0) * 40px + 56px) - 96px);
+      margin-bottom: 32px;
+      background: #fff;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+      transform-origin: top center;
+      will-change: transform;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.5s ease;
+    }
+
+    .card-slide {
+      position: relative;
+      height: 100%;
+      display: flex;
+    }
+
+    .slide-left {
+      flex: 0 0 57%;
+      padding: 52px 68px 72px;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+    }
+
+    .slide-num-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    .slide-num   { color: var(--muted); }
+    .slide-label { color: var(--label); }
+    .slide-spacer { flex: 1; }
+
+    .slide-body {
+      font-size: clamp(26px, 2.65vw, 40px);
+      font-weight: 400;
+      line-height: 1.26;
+      color: #0D0D0D;
+      letter-spacing: -0.4px;
+      margin-bottom: 40px;
+    }
+
+    .slide-cta {
+      display: inline-flex;
+      align-items: center;
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 500;
+      color: #fff;
+      background: #006400;
+      padding: 13px 28px;
+      border-radius: 100px;
+      text-decoration: none;
+      width: fit-content;
+      letter-spacing: 0.01em;
+      transition: background 0.2s ease;
+    }
+
+    .slide-cta:hover { background: #004d00; }
+
+    .slide-right { flex: 1; position: relative; overflow: hidden; }
+
+    .sr-1 { background: linear-gradient(148deg, #1A358C 0%, #3055C8 38%, #6080E8 72%, #A0B8F8 100%); }
+    .sr-2 { background: linear-gradient(148deg, #0A4018 0%, #1A7030 42%, #38A050 78%, #80C890 100%); }
+    .sr-3 { background: linear-gradient(148deg, #7A2000 0%, #B83C10 38%, #E06828 72%, #F5A060 100%); }
+    .sr-4 { background: linear-gradient(148deg, #1A2A1C 0%, #273F2C 38%, #4A6B34 68%, #C8A828 100%); }
+
+    .slide-img {
+      position: absolute;
+      top: 6%; left: 6%; right: -6%; bottom: -4%;
+      width: auto; height: auto;
+      object-fit: cover;
+      object-position: center center;
+      border-radius: 14px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.22), 0 0 0 1px rgba(0,0,0,0.05);
+    }
+
+    .mockup-browser {
+      position: absolute;
+      top: 8%; left: 8%; right: -6%; bottom: -4%;
+      background: #fff;
+      border-radius: 16px 16px 0 0;
+      overflow: hidden;
+      box-shadow: 0 -6px 40px rgba(0,0,0,0.14), 0 0 0 1px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .browser-chrome {
+      height: 44px;
+      background: #f4f4f4;
+      border-bottom: 1px solid #E6E6E6;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .browser-dot { width: 11px; height: 11px; border-radius: 50%; background: #E0E0E0; }
+
+    .browser-url {
+      flex: 1;
+      height: 24px;
+      background: #fff;
+      border: 1px solid #E0E0E0;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 6px;
+      font-size: 11.5px;
+      color: #888;
+      font-family: var(--font);
+    }
+
+    .url-icon { width: 12px; height: 12px; background: #CCC; border-radius: 3px; flex-shrink: 0; }
+
+    .browser-content {
+      flex: 1;
+      background: #F8F8F8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: #C4C4C4;
+      font-family: var(--font);
+    }
+
+    .mockup-float {
+      position: absolute;
+      bottom: 14%; left: 50%;
+      transform: translateX(-50%);
+      width: 62%;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.04);
+      overflow: hidden;
+      font-family: var(--font);
+    }
+
+    .float-item { padding: 18px 22px; border-bottom: 1px solid #F0F0F0; }
+    .float-item:last-child { border-bottom: none; }
+
+    .float-item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .float-item-name { font-size: 15px; font-weight: 600; color: #0D0D0D; display: flex; align-items: center; gap: 6px; }
+    .float-plus { color: #E56828; font-size: 16px; }
+    .float-check { width: 18px; height: 18px; border-radius: 50%; background: #0D0D0D; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; }
+    .float-chevron { width: 18px; height: 18px; border: 1.5px solid #CCC; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #AAA; font-size: 10px; }
+    .float-item-desc { font-size: 12.5px; color: #888; line-height: 1.4; }
+
+    .app-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .app-1 { background: #F5F7FF; }
+    .app-1-inner { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .app-row { display: flex; gap: 10px; }
+    .app-block { border-radius: 10px; background: #fff; border: 1px solid #E8E8F0; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #C0C8D8; }
+    .app-block.tall { height: 60px; flex: 1; }
+    .app-block.wide { height: 40px; flex: 2; }
+    .app-block.sq   { height: 40px; flex: 1; }
+
+    .app-2 { background: #FFF5F5; }
+
+    .app-3 { background: linear-gradient(160deg, #C878A0 0%, #E09080 60%, #F0B090 100%); flex: 1; }
+    .app-3-inner { padding: 16px; display: flex; flex-direction: column; gap: 8px; height: 100%; }
+    .app-3-title { font-size: 18px; font-weight: 700; color: #fff; font-family: var(--font); }
+    .app-3-sub { font-size: 10px; color: rgba(255,255,255,0.7); letter-spacing: 0.08em; text-transform: uppercase; }
+    .app-3-card { background: rgba(255,255,255,0.18); border-radius: 10px; height: 64px; border: 1px solid rgba(255,255,255,0.25); }
+    .app-3-row { display: flex; gap: 8px; }
+    .app-3-pill { background: rgba(255,255,255,0.22); border-radius: 100px; height: 20px; width: 56px; font-size: 9px; color: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; }
+
+
+    /* ── Foliage canvas — pixel garden that grows over buried cards ── */
+    #foliage-canvas {
+      position: sticky;
+      top: 0;
+      display: block;
+      width: calc(100% - 112px);
+      max-width: 1300px;
+      margin-left: auto;
+      margin-right: auto;
+      height: 96px;
+      z-index: 200;
+      pointer-events: none;
+      image-rendering: pixelated;
+      margin-bottom: -96px;
+    }
+
+    /* ============================================================
+       SCROLL PROGRESS DOTS
+    ============================================================ */
+    .scroll-dots {
+      position: fixed;
+      left: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      z-index: 200;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .scroll-dots.visible { opacity: 1; }
+
+    .scroll-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(0,100,0,0.25);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .scroll-dot.active { background: #006400; transform: scale(1.5); }
+
+
+    /* ============================================================
+       CASE STUDIES
+    ============================================================ */
+    .cs-page { display: none; }
+
+    .cs-back {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      padding: 28px 72px;
+      background: var(--bg);
+      opacity: 0.55;
+      transition: opacity 0.2s ease;
+      cursor: pointer;
+    }
+    .cs-back:hover { opacity: 1; }
+
+    .cs-hero { padding: 72px 0 84px; overflow: hidden; }
+
+    .cs-hero-jw { background: linear-gradient(148deg, #1A358C 0%, #3055C8 45%, #6080E8 80%, #A0B8F8 100%); }
+    .cs-hero-wf { background: linear-gradient(148deg, #0A4018 0%, #1A7030 45%, #38A050 80%, #80C890 100%); }
+    .cs-hero-ln { background: linear-gradient(148deg, #7A2000 0%, #B83C10 45%, #E06828 80%, #F5A060 100%); }
+    .cs-hero-lm { background: linear-gradient(148deg, #1A2A1C 0%, #273F2C 42%, #4A6B34 72%, #C8A828 100%); }
+
+    .cs-hero-inner { max-width: 900px; margin: 0 auto; padding: 0 72px; }
+
+    .cs-tags-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; }
+
+    .cs-tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.28);
+      padding: 5px 14px;
+      border-radius: 100px;
+      letter-spacing: 0.02em;
+    }
+
+    .cs-hero-title {
+      font-size: clamp(38px, 5vw, 62px);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.06;
+      letter-spacing: -2px;
+      margin-bottom: 22px;
+    }
+
+    .cs-hero-sub {
+      font-size: clamp(16px, 1.4vw, 19px);
+      font-weight: 400;
+      color: rgba(255,255,255,0.78);
+      line-height: 1.55;
+      max-width: 540px;
+    }
+
+    .cs-content { background: var(--bg); padding-bottom: 100px; }
+
+    .cs-container { max-width: 860px; margin: 0 auto; padding: 0 72px; }
+
+    .cs-overview { padding: 64px 0 52px; border-bottom: 1px solid var(--border); }
+
+    .cs-overview-text { font-size: clamp(17px, 1.5vw, 21px); font-weight: 400; line-height: 1.7; color: var(--text); }
+
+    .cs-meta-row { display: flex; gap: 48px; flex-wrap: wrap; padding: 36px 0; border-bottom: 1px solid var(--border); }
+
+    .cs-meta-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
+
+    .cs-meta-val { font-size: 15px; font-weight: 500; color: var(--text); }
+
+    .cs-img-ph {
+      border-radius: 16px;
+      background: #d4e8d4;
+      border: 1.5px dashed #a0c8a0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: #6a9a6a;
+      font-family: var(--font);
+      margin-top: 48px;
+    }
+
+    .cs-img-ph.lg { height: 460px; }
+    .cs-img-ph.md { height: 290px; }
+    .cs-img-ph.sm { height: 180px; }
+
+    .cs-img-row { display: flex; gap: 16px; margin-top: 32px; }
+    .cs-img-row .cs-img-ph { flex: 1; margin-top: 0; }
+
+    img.cs-img { display: block; border-radius: 16px; margin-top: 48px; width: 100%; object-fit: cover; }
+    img.cs-img.lg { height: 460px; }
+    img.cs-img.md { height: 290px; }
+    img.cs-img.sm { height: 180px; }
+    .cs-img-row img.cs-img { flex: 1; margin-top: 0; }
+
+    .cs-block { padding: 60px 0 0; }
+
+    .cs-section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 14px; }
+
+    .cs-heading { font-size: clamp(22px, 2.4vw, 32px); font-weight: 700; line-height: 1.18; color: var(--text); letter-spacing: -0.4px; margin-bottom: 20px; }
+
+    .cs-text { font-size: 16px; font-weight: 400; line-height: 1.78; color: #3A3A3A; margin-bottom: 14px; }
+
+    .cs-stats-row { display: flex; gap: 0; margin-top: 48px; border: 1.5px solid var(--border); border-radius: 18px; overflow: hidden; }
+
+    .cs-stat { flex: 1; padding: 32px 24px; border-right: 1.5px solid var(--border); background: #fff; }
+    .cs-stat:last-child { border-right: none; }
+
+    .cs-stat-num { font-size: clamp(28px, 3.2vw, 44px); font-weight: 800; color: var(--text); letter-spacing: -1.5px; line-height: 1; margin-bottom: 8px; }
+
+    .cs-stat-lbl { font-size: 13px; color: var(--muted); line-height: 1.45; }
+
+    .cs-steps { margin-top: 32px; }
+
+    .cs-step { display: flex; gap: 24px; padding: 28px 0; border-top: 1px solid var(--border); }
+    .cs-step:last-child { border-bottom: 1px solid var(--border); }
+
+    .cs-step-num { flex-shrink: 0; font-size: 12px; font-weight: 600; color: var(--muted); padding-top: 2px; width: 24px; }
+
+    .cs-step-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+
+    .cs-step-desc { font-size: 15px; color: #555; line-height: 1.65; }
+
+    .cs-findings { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+
+    .cs-finding { display: flex; gap: 12px; font-size: 15px; color: #3A3A3A; line-height: 1.6; }
+
+    .cs-finding::before { content: '→'; color: var(--muted); flex-shrink: 0; margin-top: 1px; }
+
+    .cs-quote { margin-top: 40px; padding: 26px 32px; border-left: 3px solid var(--text); background: #fff; border-radius: 0 12px 12px 0; font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--text); font-style: italic; }
+
+    .cs-nav-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 56px 0 0; border-top: 1px solid var(--border); margin-top: 72px; gap: 24px; }
+
+    .cs-nav-link { font-family: var(--font); text-decoration: none; display: flex; flex-direction: column; gap: 4px; }
+
+    .cs-nav-lbl { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+
+    .cs-nav-title { font-size: 17px; font-weight: 700; color: var(--text); transition: opacity 0.2s; }
+
+    .cs-nav-link:hover .cs-nav-title { opacity: 0.6; }
+
+    .cs-nav-link.right { text-align: right; }
+
+    /* ── About page ── */
+    .about-page { display: none; position: relative; min-height: 100vh; background: var(--bg); overflow-x: hidden; }
+
+    .about-bg-grid {
+      position: fixed;
+      inset: 0;
+      background-size: 60px 60px;
+      background-image:
+        linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+      -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 50%, transparent 90%);
+      mask-image: radial-gradient(ellipse at 50% 30%, black 50%, transparent 90%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .about-floating-flowers {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .about-wrap {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 72px 160px;
+    }
+
+    .about-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .about-name {
+      font-family: var(--font-head);
+      font-size: clamp(72px, 9vw, 108px);
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -4px;
+      line-height: 0.92;
+      margin-bottom: 36px;
+    }
+
+    .about-intro {
+      font-size: clamp(18px, 2vw, 22px);
+      line-height: 1.7;
+      color: var(--text);
+      max-width: 560px;
+    }
+
+    .about-rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 56px 0;
+    }
+
+    .about-tl { display: flex; flex-direction: column; gap: 30px; }
+
+    .about-tl-row {
+      display: grid;
+      grid-template-columns: 76px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .about-tl-year {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      padding-top: 4px;
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+
+    .about-tl-role { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .about-tl-company { font-size: 13px; color: #059669; font-weight: 600; letter-spacing: 0.02em; margin-bottom: 5px; }
+    .about-tl-note { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    .about-edu-row { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+    .about-edu-name { font-size: 17px; font-weight: 700; color: var(--text); }
+    .about-edu-year { font-size: 13px; color: var(--muted); }
+
+    .about-skill-groups { display: flex; flex-direction: column; gap: 22px; margin-top: 18px; }
+    .about-skill-cat { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .about-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .about-pill {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      background: rgba(0,100,0,0.07);
+      border: 1px solid rgba(0,100,0,0.14);
+      padding: 7px 15px;
+      border-radius: 100px;
+      letter-spacing: 0.01em;
+      transition: background 0.15s;
+    }
+
+    .about-pill:hover { background: rgba(0,100,0,0.13); }
+
+    .about-contact {
+      margin-top: 56px;
+      padding: 32px 36px;
+      background: rgba(0,100,0,0.05);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .about-contact-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+
+    .about-contact a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      border-bottom: 1.5px solid var(--border);
+      padding-bottom: 2px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .about-contact a:hover { border-color: #059669; color: #059669; }
+    .about-contact-dot { color: var(--muted); font-size: 18px; }
+
+    .cs-divider { border: none; border-top: 1px solid var(--border); margin: 48px 0 0; }
+
+
+    /* ── SLOGAN SECTION ───────────────────────────────────────────── */
+    .slogan-section {
+      position: relative;
+      padding: 140px 6vw 160px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      background: var(--bg);
+    }
+
+    .slogan-inner {
+      position: relative;
+      will-change: transform;
+    }
+
+    .slogan-line {
+      display: block;
+      overflow: visible;
+      line-height: 1;
+      will-change: transform;
+    }
+
+    .slogan-line:first-child {
+      margin-bottom: 0.12em;
+    }
+
+    .slogan-word {
+      display: inline-block;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: clamp(52px, 9vw, 130px);
+      color: var(--text);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      margin-right: 0.22em;
+      white-space: nowrap;
+      letter-spacing: -0.04em;
+    }
+
+    .slogan-line:last-child .slogan-word {
+      font-style: italic;
+      font-size: clamp(46px, 8vw, 116px);
+      color: var(--muted);
+    }
+
+    .slogan-word.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .slogan-deco {
+      position: absolute;
+      right: 8vw;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-head);
+      font-size: clamp(10px, 1vw, 13px);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      writing-mode: vertical-rl;
+      opacity: 0;
+      transition: opacity 1s ease 1.5s;
+    }
+
+    .slogan-deco.revealed { opacity: 1; }
+
+    .slogan-rule {
+      position: absolute;
+      bottom: 0;
+      left: 6vw;
+      right: 6vw;
+      height: 1px;
+      background: var(--border);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Custom cursor: leaf pointer, switches to pixel flower on link/button hover -->
+  <div id="leaf-cursor" style="position:fixed;top:0;left:0;pointer-events:none;z-index:9999;will-change:transform;">
+    <svg id="cursor-leaf" xmlns="http://www.w3.org/2000/svg" width="18" height="26" viewBox="0 0 18 26" style="display:block;overflow:visible;">
+      <path d="M9 1 C16 5 17 18 12 24 C10 26 8 26 6 24 C1 18 2 5 9 1 Z" fill="#064e3b" opacity="0.9"/>
+      <line x1="9" y1="3" x2="9" y2="23" stroke="rgba(255,255,255,0.42)" stroke-width="0.8"/>
+      <line x1="9" y1="10" x2="13" y2="16" stroke="rgba(255,255,255,0.22)" stroke-width="0.55"/>
+      <line x1="9" y1="16" x2="5" y2="21" stroke="rgba(255,255,255,0.22)" stroke-width="0.55"/>
+    </svg>
+    <svg id="cursor-flower" xmlns="http://www.w3.org/2000/svg" width="28" height="32" viewBox="0 0 28 32" style="display:none;image-rendering:pixelated;shape-rendering:crispEdges;">
+      <rect x="8"  y="0"  width="8" height="8" fill="#FFD700"/>
+      <rect x="8"  y="16" width="8" height="8" fill="#FFD700"/>
+      <rect x="0"  y="8"  width="8" height="8" fill="#FFD700"/>
+      <rect x="16" y="8"  width="8" height="8" fill="#FFD700"/>
+      <rect x="8"  y="8"  width="8" height="8" fill="#5C3317"/>
+      <rect x="11" y="24" width="5" height="8" fill="#008631"/>
+    </svg>
+  </div>
+
+  <div id="landing-content">
+
+  <!-- ============================================================
+       HERO VIEWPORT  (nav + hero title + footer bar)
+  ============================================================ -->
+  <div class="hero-viewport">
+
+    <!-- Grid background -->
+    <div class="hero-grid" id="hero-grid"></div>
+
+    <!-- Sunlight aura canvas (between grid and flowers) -->
+    <canvas id="helio-aura"></canvas>
+
+    <!-- Floating pixel flowers -->
+    <div class="hero-flowers">
+
+      <!-- flower 0 — top-left, medium -->
+      <div class="hero-flower float-medium delay-100" id="hf-0" style="top:15%;left:10%;width:32px;height:32px;opacity:0.9;">
+        <svg viewBox="0 0 12 16" class="pixel-art" style="width:100%;height:100%;display:block;">
+          <rect x="4" y="0" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="8" width="4" height="4" fill="#FFD700"/>
+          <rect x="0" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="8" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="4" width="4" height="4" fill="#004d40"/>
+          <rect x="4" y="12" width="4" height="4" fill="#008631"/>
+        </svg>
+      </div>
+
+      <!-- flower 1 — top, slight left, slow -->
+      <div class="hero-flower float-slow delay-500" id="hf-1" style="top:8%;left:25%;width:24px;height:24px;opacity:0.8;">
+        <svg viewBox="0 0 12 16" class="pixel-art" style="width:100%;height:100%;display:block;">
+          <rect x="4" y="0" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="8" width="4" height="4" fill="#FFD700"/>
+          <rect x="0" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="8" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="4" width="4" height="4" fill="#5C3317"/>
+          <rect x="4" y="12" width="4" height="4" fill="#008631"/>
+        </svg>
+      </div>
+
+      <!-- flower 2 — top-right, fast, tall variant -->
+      <div class="hero-flower float-fast delay-300" id="hf-2" style="top:20%;right:15%;width:40px;height:40px;opacity:0.85;">
+        <svg viewBox="0 0 12 20" class="pixel-art" style="width:100%;height:100%;display:block;">
+          <rect x="4" y="0" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="8" width="4" height="4" fill="#FFD700"/>
+          <rect x="0" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="8" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="4" width="4" height="4" fill="#004d40"/>
+          <rect x="4" y="12" width="4" height="8" fill="#008631"/>
+        </svg>
+      </div>
+
+      <!-- flower 3 — bottom-left, green petals -->
+      <div class="hero-flower float-slow delay-700" id="hf-3" style="bottom:20%;left:8%;width:28px;height:28px;opacity:0.8;">
+        <svg viewBox="0 0 12 16" class="pixel-art" style="width:100%;height:100%;display:block;">
+          <rect x="4" y="0" width="4" height="4" fill="#008631"/>
+          <rect x="4" y="8" width="4" height="4" fill="#008631"/>
+          <rect x="0" y="4" width="4" height="4" fill="#008631"/>
+          <rect x="8" y="4" width="4" height="4" fill="#008631"/>
+          <rect x="4" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="12" width="4" height="4" fill="#004d40"/>
+        </svg>
+      </div>
+
+      <!-- flower 4 — bottom-right, medium, with leaf -->
+      <div class="hero-flower float-medium delay-1000" id="hf-4" style="bottom:25%;right:20%;width:36px;height:36px;opacity:0.9;">
+        <svg viewBox="0 0 12 20" class="pixel-art" style="width:100%;height:100%;display:block;">
+          <rect x="4" y="0" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="8" width="4" height="4" fill="#FFD700"/>
+          <rect x="0" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="8" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="4" width="4" height="4" fill="#004d40"/>
+          <rect x="4" y="12" width="4" height="8" fill="#008631"/>
+          <rect x="8" y="14" width="2" height="2" fill="#008631"/>
+        </svg>
+      </div>
+
+      <!-- flower 5 — mid-left, small -->
+      <div class="hero-flower float-slow" id="hf-5" style="top:40%;left:10%;width:16px;height:16px;opacity:0.6;">
+        <svg viewBox="0 0 12 16" class="pixel-art" style="width:100%;height:100%;display:block;">
+          <rect x="4" y="0" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="8" width="4" height="4" fill="#FFD700"/>
+          <rect x="0" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="8" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="4" width="4" height="4" fill="#5C3317"/>
+          <rect x="4" y="12" width="4" height="4" fill="#008631"/>
+        </svg>
+      </div>
+
+      <!-- flower 6 — mid-right, small green -->
+      <div class="hero-flower float-slow delay-200" id="hf-6" style="top:60%;right:8%;width:20px;height:20px;opacity:0.7;">
+        <svg viewBox="0 0 12 16" class="pixel-art" style="width:100%;height:100%;display:block;">
+          <rect x="4" y="0" width="4" height="4" fill="#008631"/>
+          <rect x="4" y="8" width="4" height="4" fill="#008631"/>
+          <rect x="0" y="4" width="4" height="4" fill="#008631"/>
+          <rect x="8" y="4" width="4" height="4" fill="#008631"/>
+          <rect x="4" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="12" width="4" height="4" fill="#004d40"/>
+        </svg>
+      </div>
+
+    </div><!-- /.hero-flowers -->
+
+    <!-- Nav -->
+    <nav class="main-nav" id="main-nav">
+      <div class="nav-year">Portfolio 2026</div>
+      <div class="nav-center">
+        <div class="nav-item-works">
+          <a href="#" class="nav-link">
+            <span class="nav-link-text">WORKS</span>
+            <span class="nav-link-arrow">▼</span>
+          </a>
+          <div class="nav-dropdown">
+            <a href="#lemon"      class="nav-dropdown-item">Lemon · Product Design</a>
+            <a href="#justworks"  class="nav-dropdown-item">EOR Cost Calculator</a>
+            <a href="#wholefoods" class="nav-dropdown-item">Grocery Data Management</a>
+            <a href="#ledn"       class="nav-dropdown-item">B2X Lending Platform</a>
+          </div>
+        </div>
+        <a href="#about" class="nav-link nav-link-about"><span class="nav-link-text">ABOUT</span></a>
+      </div>
+    </nav>
+
+    <!-- Hero title -->
+    <div class="hero-main">
+      <div class="hero-title-wrap" id="hero-title-wrap">
+        <div class="hero-tag hero-tag-top">Product + Experience Designer</div>
+        <h1 class="hero-title">
+          <!-- "I" as pixel flower (tall) -->
+          <div class="hero-i hero-i-tall" id="hf-title-0">
+            <svg viewBox="0 0 24 80" class="pixel-art" preserveAspectRatio="xMidYMax" style="width:100%;height:100%;overflow:visible;">
+              <!-- stem: 7×8px segments, bottom→top, each drops from above -->
+              <rect class="px px-fall" style="animation-delay:80ms"  x="10" y="72" width="4" height="8" fill="#006400"/>
+              <rect class="px px-fall" style="animation-delay:140ms" x="10" y="64" width="4" height="8" fill="#006400"/>
+              <rect class="px px-fall" style="animation-delay:200ms" x="10" y="56" width="4" height="8" fill="#006400"/>
+              <rect class="px px-fall" style="animation-delay:260ms" x="10" y="48" width="4" height="8" fill="#006400"/>
+              <rect class="px px-fall" style="animation-delay:320ms" x="10" y="40" width="4" height="8" fill="#006400"/>
+              <rect class="px px-fall" style="animation-delay:380ms" x="10" y="32" width="4" height="8" fill="#006400"/>
+              <rect class="px px-fall" style="animation-delay:440ms" x="10" y="24" width="4" height="8" fill="#006400"/>
+              <!-- leaves: fly in from their side -->
+              <rect class="px px-right" style="animation-delay:500ms" x="6"  y="64" width="4" height="4" fill="#004d40"/>
+              <rect class="px px-right" style="animation-delay:540ms" x="2"  y="60" width="4" height="4" fill="#004d40"/>
+              <rect class="px px-left"  style="animation-delay:540ms" x="14" y="56" width="4" height="4" fill="#004d40"/>
+              <rect class="px px-left"  style="animation-delay:580ms" x="18" y="52" width="4" height="4" fill="#004d40"/>
+              <!-- center: drops in last before petals -->
+              <rect class="px px-fall"  style="animation-delay:640ms" x="8"  y="8"  width="8" height="8" fill="#5C3317"/>
+              <!-- petals: burst from four cardinal directions -->
+              <rect class="px px-rise"  style="animation-delay:700ms" x="8"  y="16" width="8" height="8" fill="#FFD700"/>
+              <rect class="px px-right" style="animation-delay:730ms" x="0"  y="8"  width="8" height="8" fill="#FFD700"/>
+              <rect class="px px-left"  style="animation-delay:730ms" x="16" y="8"  width="8" height="8" fill="#FFD700"/>
+              <rect class="px px-fall"  style="animation-delay:760ms" x="8"  y="0"  width="8" height="8" fill="#FFD700"/>
+              <!-- corner petals: use fill-opacity so CSS opacity:1 end-state doesn't override the tint -->
+              <rect class="px px-tl" style="animation-delay:790ms" x="4"  y="4"  width="4" height="4" fill="#FFD700" fill-opacity="0.8"/>
+              <rect class="px px-tr" style="animation-delay:790ms" x="16" y="4"  width="4" height="4" fill="#FFD700" fill-opacity="0.8"/>
+              <rect class="px px-bl" style="animation-delay:790ms" x="4"  y="16" width="4" height="4" fill="#FFD700" fill-opacity="0.8"/>
+              <rect class="px px-br" style="animation-delay:790ms" x="16" y="16" width="4" height="4" fill="#FFD700" fill-opacity="0.8"/>
+            </svg>
+          </div>
+          <span>vy L</span>
+          <!-- "i" as pixel flower (short) -->
+          <div class="hero-i hero-i-short" id="hf-title-1">
+            <svg viewBox="0 0 24 60" class="pixel-art" preserveAspectRatio="xMidYMax" style="width:100%;height:100%;overflow:visible;">
+              <!-- stem: 4×9px segments, bottom→top -->
+              <rect class="px px-fall" style="animation-delay:280ms" x="10" y="51" width="4" height="9" fill="#006400"/>
+              <rect class="px px-fall" style="animation-delay:340ms" x="10" y="42" width="4" height="9" fill="#006400"/>
+              <rect class="px px-fall" style="animation-delay:400ms" x="10" y="33" width="4" height="9" fill="#006400"/>
+              <rect class="px px-fall" style="animation-delay:460ms" x="10" y="24" width="4" height="9" fill="#006400"/>
+              <!-- leaves -->
+              <rect class="px px-right" style="animation-delay:520ms" x="6"  y="44" width="4" height="4" fill="#004d40"/>
+              <rect class="px px-right" style="animation-delay:560ms" x="2"  y="40" width="4" height="4" fill="#004d40"/>
+              <rect class="px px-left"  style="animation-delay:560ms" x="14" y="36" width="4" height="4" fill="#004d40"/>
+              <rect class="px px-left"  style="animation-delay:600ms" x="18" y="32" width="4" height="4" fill="#004d40"/>
+              <!-- center -->
+              <rect class="px px-fall"  style="animation-delay:660ms" x="8"  y="8"  width="8" height="8" fill="#5C3317"/>
+              <!-- petals: burst from four directions, ~20ms after tall flower's petals -->
+              <rect class="px px-rise"  style="animation-delay:720ms" x="8"  y="16" width="8" height="8" fill="#FFD700"/>
+              <rect class="px px-right" style="animation-delay:750ms" x="0"  y="8"  width="8" height="8" fill="#FFD700"/>
+              <rect class="px px-left"  style="animation-delay:750ms" x="16" y="8"  width="8" height="8" fill="#FFD700"/>
+              <rect class="px px-fall"  style="animation-delay:780ms" x="8"  y="0"  width="8" height="8" fill="#FFD700"/>
+              <!-- corner petals -->
+              <rect class="px px-tl" style="animation-delay:810ms" x="4"  y="4"  width="4" height="4" fill="#FFD700" fill-opacity="0.8"/>
+              <rect class="px px-tr" style="animation-delay:810ms" x="16" y="4"  width="4" height="4" fill="#FFD700" fill-opacity="0.8"/>
+              <rect class="px px-bl" style="animation-delay:810ms" x="4"  y="16" width="4" height="4" fill="#FFD700" fill-opacity="0.8"/>
+              <rect class="px px-br" style="animation-delay:810ms" x="16" y="16" width="4" height="4" fill="#FFD700" fill-opacity="0.8"/>
+            </svg>
+          </div>
+          <span>u</span>
+        </h1>
+        <div class="hero-tag hero-tag-bottom">BASED IN TORONTO</div>
+      </div>
+    </div>
+
+    <!-- Footer bar (inside viewport) -->
+    <div class="hero-footer-bar" id="hero-footer">
+      <div>2026</div>
+      <div class="hf-center">↓ SCROLL</div>
+      <div class="hf-right">
+        <span>© 2026 IVY LIU</span>
+        <span>ALL RIGHTS RESERVED</span>
+      </div>
+    </div>
+
+  </div><!-- /.hero-viewport -->
+
+
+  <!-- ============================================================
+       SLOGAN SECTION
+  ============================================================ -->
+  <section class="slogan-section" id="slogan-section">
+    <div class="slogan-inner" id="slogan-inner">
+      <div class="slogan-line" id="slogan-line-0">
+        <span class="slogan-word" data-text="Complex">Complex</span>
+        <span class="slogan-word" data-text="by">by</span>
+        <span class="slogan-word" data-text="nature.">nature.</span>
+      </div>
+      <div class="slogan-line" id="slogan-line-1">
+        <span class="slogan-word" data-text="Simple">Simple</span>
+        <span class="slogan-word" data-text="by">by</span>
+        <span class="slogan-word" data-text="design.">design.</span>
+      </div>
+    </div>
+    <div class="slogan-deco" id="slogan-deco">Product · Experience · Strategy</div>
+    <div class="slogan-rule"></div>
+  </section>
+
+
+  <!-- ============================================================
+       FOUR-CARD STICKY SCROLL
+  ============================================================ -->
+  <section class="cards-outer" id="cards-section">
+
+    <!-- Canvas garden — sticky strip that grows pixel plants as cards bury -->
+    <canvas id="foliage-canvas"></canvas>
+
+    <!-- ── CARD 1 — Lemon ── -->
+    <div class="card-shell" style="--i:0">
+      <div class="card-slide" data-slide="0">
+        <div class="slide-left">
+          <div class="slide-num-row">
+            <span class="slide-num">01 / 04</span>
+            <span class="slide-label">Lemon — Onboarding & Monetization</span>
+          </div>
+          <div class="slide-spacer"></div>
+          <p class="slide-body">I changed the roadmap before I changed the design — pulling retention data after a viral launch, then shipping 8 onboarding versions in 5 weeks and building an empathy-first upgrade system from scratch.</p>
+          <a href="#lemon" class="slide-cta">View Case Study</a>
+        </div>
+        <div class="slide-right sr-4">
+          <div class="mockup-browser">
+            <div class="browser-chrome">
+              <div class="browser-dot"></div>
+              <div class="browser-dot"></div>
+              <div class="browser-dot"></div>
+              <div class="browser-url">
+                <div class="url-icon"></div>
+                <span>lemon.app/onboarding</span>
+              </div>
+            </div>
+            <img src="./images/v8-welcome.png" style="width:100%;flex:1;object-fit:cover;object-position:center top;display:block;" alt="Lemon — V8 notch onboarding on real Mac desktop">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CARD 2 — Justworks ── -->
+    <div class="card-shell" style="--i:1">
+      <div class="card-slide" data-slide="1">
+        <div class="slide-left">
+          <div class="slide-num-row">
+            <span class="slide-num">02 / 04</span>
+            <span class="slide-label">Justworks — EOR Cost Calculator</span>
+          </div>
+          <div class="slide-spacer"></div>
+          <p class="slide-body">Designing an Employer of Record Cost Calculator to help small businesses understand the real cost of global hiring — and convert more international clients in the process.</p>
+          <a href="#justworks" class="slide-cta">View Case Study</a>
+        </div>
+        <div class="slide-right sr-1">
+          <div class="mockup-browser">
+            <div class="browser-chrome">
+              <div class="browser-dot"></div>
+              <div class="browser-dot"></div>
+              <div class="browser-dot"></div>
+              <div class="browser-url">
+                <div class="url-icon"></div>
+                <span>justworks.com/eor-calculator</span>
+              </div>
+            </div>
+            <img src="./images/Frame 3184030.png" style="width:100%;flex:1;object-fit:cover;object-position:top center;display:block;" alt="Justworks EOR Calculator">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CARD 3 — Whole Foods ── -->
+    <div class="card-shell" style="--i:2">
+      <div class="card-slide" data-slide="2">
+        <div class="slide-left">
+          <div class="slide-num-row">
+            <span class="slide-num">03 / 04</span>
+            <span class="slide-label">Whole Foods Market — Grocery Data Management</span>
+          </div>
+          <div class="slide-spacer"></div>
+          <p class="slide-body">Creating a centralized data management system as a single source of truth for suppliers — making complex grocery operations simpler across one of the world's largest natural food retailers.</p>
+          <a href="#wholefoods" class="slide-cta">View Case Study</a>
+        </div>
+        <div class="slide-right sr-2">
+          <div class="mockup-browser">
+            <div class="browser-chrome">
+              <div class="browser-dot"></div>
+              <div class="browser-dot"></div>
+              <div class="browser-dot"></div>
+              <div class="browser-url">
+                <div class="url-icon"></div>
+                <span>wholefoods-supplier.app</span>
+              </div>
+            </div>
+            <img src="./images/Wholefoods.png" style="width:100%;flex:1;object-fit:cover;object-position:42% top;display:block;" alt="Whole Foods Data Management">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CARD 4 — Ledn ── -->
+    <div class="card-shell" style="--i:3">
+      <div class="card-slide" data-slide="3">
+        <div class="slide-left">
+          <div class="slide-num-row">
+            <span class="slide-num">04 / 04</span>
+            <span class="slide-label">Ledn — B2X Lending Platform</span>
+          </div>
+          <div class="slide-spacer"></div>
+          <p class="slide-body">Shaping crypto-backed lending products — Bitcoin savings accounts, USDC yields, and Bitcoin-backed loans — to improve user retention on a global digital asset platform.</p>
+          <a href="#ledn" class="slide-cta">View Case Study</a>
+        </div>
+        <div class="slide-right sr-3">
+          <div class="mockup-browser">
+            <div class="browser-chrome">
+              <div class="browser-dot"></div>
+              <div class="browser-dot"></div>
+              <div class="browser-dot"></div>
+              <div class="browser-url">
+                <div class="url-icon"></div>
+                <span>ledn.io/b2x-loans</span>
+              </div>
+            </div>
+            <img src="./images/Screenshot 2023-11-28 at 3.39.17 PM.png" style="width:100%;flex:1;object-fit:cover;object-position:center top;display:block;" alt="Ledn B2X Lending Platform">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Progress dots -->
+  <div class="scroll-dots" id="scroll-dots">
+    <div class="scroll-dot active"></div>
+    <div class="scroll-dot"></div>
+    <div class="scroll-dot"></div>
+    <div class="scroll-dot"></div>
+  </div>
+
+
+  </div><!-- /#landing-content -->
+
+
+  <!-- ============================================================
+       CASE STUDY 1 — JUSTWORKS
+  ============================================================ -->
+  <section id="justworks" class="cs-page">
+  <a href="#" class="cs-back">← Back to work</a>
+  <div class="cs-hero cs-hero-jw">
+    <div class="cs-hero-inner">
+      <div class="cs-tags-row">
+        <span class="cs-tag">Justworks</span>
+        <span class="cs-tag">Enterprise Design</span>
+        <span class="cs-tag">HR Tech · PLG</span>
+      </div>
+      <h2 class="cs-hero-title">EOR Cost<br>Calculator</h2>
+      <p class="cs-hero-sub">I was Justworks' first designer in Toronto. My first project cut international cost reporting from 1 hour to 5 seconds — and became the foundation for the company's PLG self-enrollment strategy.</p>
+    </div>
+  </div>
+  <div class="cs-content">
+    <div class="cs-container">
+
+      <div class="cs-overview">
+        <p class="cs-overview-text">Justworks is an HR platform that simplifies payroll, benefits, and compliance for thousands of small businesses. When the company pushed into international markets, I joined as its first product designer in the Toronto office — hired specifically to shape how global customers would experience Justworks for the first time. My first project: an Employer of Record (EOR) Cost Calculator that could tell a business owner exactly what it costs to hire someone in Germany, Canada, or Mexico — in five seconds.</p>
+      </div>
+
+      <div class="cs-meta-row">
+        <div><div class="cs-meta-label">Role</div><div class="cs-meta-val">Senior Product Designer</div></div>
+        <div><div class="cs-meta-label">Company</div><div class="cs-meta-val">Justworks</div></div>
+        <div><div class="cs-meta-label">Timeline</div><div class="cs-meta-val">2024 – 2025</div></div>
+        <div><div class="cs-meta-label">Team</div><div class="cs-meta-val">PLG · International Expansion</div></div>
+      </div>
+
+      <!-- IMAGE 1: jw-final-responsive.png
+           Figma file: o0TciWpujj9D6S7e2lzPgK | Node: 1:23 + 1:25
+           Export: Frame 87 + Frame 88 combined, or export the full "Calculator" slide
+           showing desktop, breakpoint, and mobile views of the EOR cost calculator UI.
+           Recommended: export at 2x, PNG -->
+      <img src="./images/Frame 3184027.png" class="cs-img lg" style="object-position:center top;" alt="EOR Cost Calculator — responsive design across desktop, breakpoint, and mobile">
+
+      <div class="cs-block">
+        <div class="cs-section-label">The Problem</div>
+        <h3 class="cs-heading">Sales reps were spending an hour on every cost estimate — and losing deals because of it</h3>
+        <p class="cs-text">Before the calculator existed, generating a single international cost report was entirely manual. A sales rep would spend up to an hour per request: sourcing tax rates from government websites, fixing broken Excel formula references, and emailing a PDF that was sometimes outdated by the time the client opened it.</p>
+        <p class="cs-text">The business impact was significant — slow sales cycles, inconsistent outputs that eroded trust, and prospects who moved on before getting an answer. Competitors like Oyster, Deel, Remote, and Omnipresent already had self-serve calculators. Justworks didn't. This wasn't just a workflow problem. It was a conversion problem.</p>
+      </div>
+
+      <!-- IMAGE 2: jw-problem-excel.png
+           Figma file: o0TciWpujj9D6S7e2lzPgK | Node: 1:29
+           Export: Frame 83 — the slide showing two Excel spreadsheet screenshots
+           (the "before" state of manual cost reporting). PNG, 2x -->
+      <img src="./images/Screenshot 2025-07-27 at 6.04.47 PM.png" class="cs-img md" style="object-fit:contain;background:#f7f7f5;object-position:left center;" alt="Before: sales reps built cost reports manually in Excel — a process that took up to an hour per quote">
+
+      <div class="cs-stats-row">
+        <div class="cs-stat">
+          <div class="cs-stat-num">~1 hr</div>
+          <div class="cs-stat-lbl">to generate one cost report manually</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">5/day</div>
+          <div class="cs-stat-lbl">support emails from pricing confusion</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">4</div>
+          <div class="cs-stat-lbl">competitors already had self-serve calculators</div>
+        </div>
+      </div>
+
+      <div class="cs-block">
+        <div class="cs-section-label">The Decision That Shaped Everything</div>
+        <h3 class="cs-heading">Before I touched Figma, I made the strategic case for why this needed to be a product — not a spreadsheet</h3>
+        <p class="cs-text">The obvious brief was "make a better calculator." I didn't start there. Instead I spent two weeks interviewing the sales team and building the business case for why this tool needed to be treated as a strategic product asset — tied directly to Justworks' FY25 international revenue goals and competitive positioning.</p>
+        <p class="cs-text">I presented to stakeholders before designing a single screen, connecting the tool to three business levers: lead conversion (prospects who got faster estimates were significantly more likely to move forward), sales efficiency (eliminating the manual quoting burden), and competitive differentiation (matching and beating what Deel and Oyster already offered). That framing changed the scope and ambition of the project.</p>
+        <div class="cs-quote">"Both internal and external users valued speed and trust above all else."</div>
+      </div>
+
+      <div class="cs-block">
+        <div class="cs-section-label">Research & Discovery</div>
+        <h3 class="cs-heading">The research revealed two completely different users calling themselves the same thing</h3>
+        <p class="cs-text">I interviewed sales reps, prospects, and internal operations teams — mapping their workflows with emotional markers to capture not just procedural friction, but the anxiety underneath it. One insight changed the architecture of the entire design.</p>
+        <p class="cs-text">Not all cost estimate requests were the same. <strong>Exploratory clients</strong> were pre-offer: they needed fast, rough estimates to decide if international hiring was financially viable at all. <strong>Confirmed-offer clients</strong> were post-offer: they needed precise, finance-team-ready numbers before a deal could close. These two users had opposite needs — one wanted speed, the other wanted accuracy and depth. Designing one tool to serve both, without bloating it, required an explicit architectural decision: adaptive fields that changed based on country selection, a clear scope disclaimer, and a report format that finance teams could trust.</p>
+        <div class="cs-findings">
+          <div class="cs-finding">Exploratory clients (pre-offer) needed fast rough estimates — they were still deciding if international hiring was feasible</div>
+          <div class="cs-finding">Confirmed-offer clients (post-offer) needed precise numbers for their finance team before a deal could close</div>
+          <div class="cs-finding">Quoting complexity varied drastically by country: Canada and Mexico were simple; France and Germany were expensive with high compliance overhead</div>
+          <div class="cs-finding">No standardized output meant every deliverable looked different — clients compared quotes from different reps and got confused</div>
+        </div>
+      </div>
+
+      <!-- IMAGE 3: jw-research-journeymap.png
+           Figma file: o0TciWpujj9D6S7e2lzPgK | Node: 1:12
+           Export: Frame 84 — the "Approach: How the solution took shape" slide
+           showing the multi-persona journey map with four user types and emotional markers.
+           PNG, 2x -->
+      <img src="./images/Screenshot 2025-07-27 at 6.04.47 PM.png" class="cs-img md" style="object-fit:contain;background:#edf4ed;object-position:right center;" alt="Multi-persona journey map — four user types (Primary Admin, Enrollment Manager, Sales Rep, Finance Team) mapped across the quoting workflow">
+
+      <div class="cs-block">
+        <div class="cs-section-label">Design Process</div>
+        <h3 class="cs-heading">Two-stage workshops, adaptive inputs, and an API-first architecture</h3>
+        <div class="cs-steps">
+          <div class="cs-step">
+            <div class="cs-step-num">01</div>
+            <div>
+              <div class="cs-step-title">Two-stage ideation workshops</div>
+              <div class="cs-step-desc">I ran a small session first — designers and PM only — to generate ideas freely without engineering constraints. Then a second, larger workshop with Engineering, Sales, and Finance using an Impact × Effort matrix to prioritize scope. This sequencing was intentional: the first session lets ideas breathe, the second grounds them in reality. The MVP feature set came directly from that second workshop.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">02</div>
+            <div>
+              <div class="cs-step-title">Competitive audit of existing calculators</div>
+              <div class="cs-step-desc">Before wireframing, I audited Oyster, Deel, Remote, and Omnipresent's cost calculators to identify patterns, gaps, and where we could differentiate. The insight: competitors gave estimates but rarely explained them. Our opportunity was in the explanation — the transparency layer on top of the numbers.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">03</div>
+            <div>
+              <div class="cs-step-title">Wireframes and adaptive field logic</div>
+              <div class="cs-step-desc">Low-fidelity wireframes validated the core layout decisions: adaptive inputs that changed based on country selection (reducing cognitive load for simpler markets like Canada while surfacing additional complexity for France and Germany), the employer vs. employee cost split view, and fallback states for incomplete or unknown data. Engineering flagged technical constraints before they became blockers.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">04</div>
+            <div>
+              <div class="cs-step-title">API-first, responsive high-fidelity</div>
+              <div class="cs-step-desc">The final design was built API-first — not just a UI skin over a spreadsheet, but a live data-connected tool. Responsive layouts for desktop, breakpoint, and mobile. The report output was designed to be finance-team-shareable, with a clear employer/employee cost breakdown and an intentional disclaimer: estimates are for planning, not payroll decisions or legal agreements.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">05</div>
+            <div>
+              <div class="cs-step-title">Design system documentation</div>
+              <div class="cs-step-desc">Components and tokens from this project were documented and added to the Justworks design system. Recorded walkthroughs were produced for engineering handoff — improving design-to-code velocity for the PLG team on subsequent features.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-img-row">
+        <!-- IMAGE 4: jw-workshop-matrix.png
+             Figma file: o0TciWpujj9D6S7e2lzPgK | Node: 1:15
+             Export: Frame 85 — "Ideation & Prioritization" slide showing the
+             Impact × Effort matrix with color-coded sticky notes. PNG, 2x -->
+        <img src="./images/ChatGPT Image Jul 27, 2025, 06_32_13 PM.png" class="cs-img md" style="object-fit:contain;background:#fafaf8;" alt="Ideation workshop — Impact × Effort matrix with color-coded stickies">
+
+        <!-- IMAGE 5: jw-wireframes.png
+             Figma file: o0TciWpujj9D6S7e2lzPgK | Node: 1:18
+             Export: Frame 86 — "Exploration & Wireframes" slide showing lo-fi wireframes.
+             PNG, 2x -->
+        <img src="./images/ChatGPT Image Jul 27, 2025, 06_32_48 PM.png" class="cs-img md" style="object-fit:contain;background:#fafaf8;" alt="Low-fidelity wireframes — adaptive field layout and report structure validation">
+      </div>
+
+      <div class="cs-block">
+        <div class="cs-section-label">Results</div>
+        <h3 class="cs-heading">5 seconds. 700 hours saved per month. The calculator became the foundation for PLG.</h3>
+        <p class="cs-text">The calculator delivered immediate, accurate employment cost estimates by country — covering salary, taxes, and benefits — accessible to both sales reps and prospects through self-service. First-session activation increased as more users reached a trusted price before dropping off. The design was later extended into Justworks' self-enrollment flow, allowing customers to initiate the onboarding journey directly from their quote.</p>
+      </div>
+
+      <div class="cs-stats-row">
+        <div class="cs-stat">
+          <div class="cs-stat-num">5 sec</div>
+          <div class="cs-stat-lbl">to generate a report (was ~1 hour)</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">~700 hrs</div>
+          <div class="cs-stat-lbl">saved per month across the sales team</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">−90%</div>
+          <div class="cs-stat-lbl">support emails tagged "price / status"</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">+15%</div>
+          <div class="cs-stat-lbl">PEO → EOR service conversions</div>
+        </div>
+      </div>
+
+      <!-- IMAGE 6: jw-entry-point.png
+           Figma file: o0TciWpujj9D6S7e2lzPgK | Node: 1:21
+           Export: Frame 87 — the "Entry point" slide showing the EOR Product Detail Page
+           and Invitation Center designs. PNG, 2x -->
+      <img src="./images/Frame 3184028.png" class="cs-img lg" style="object-position:center top;" alt="Entry point designs — EOR Product Detail Page and Invitation Center">
+
+      <div class="cs-nav-row">
+        <a href="#" class="cs-nav-link">
+          <div class="cs-nav-lbl">← Back</div>
+          <div class="cs-nav-title">All Work</div>
+        </a>
+        <a href="#wholefoods" class="cs-nav-link right">
+          <div class="cs-nav-lbl">Next →</div>
+          <div class="cs-nav-title">Supplier & Offer Data Management</div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- ============================================================
+       CASE STUDY 2 — WHOLE FOODS
+  ============================================================ -->
+  <section id="wholefoods" class="cs-page">
+  <a href="#" class="cs-back">← Back to work</a>
+  <div class="cs-hero cs-hero-wf">
+    <div class="cs-hero-inner">
+      <div class="cs-tags-row">
+        <span class="cs-tag">Whole Foods Market</span>
+        <span class="cs-tag">Enterprise Design</span>
+        <span class="cs-tag">Retail Operations</span>
+      </div>
+      <h2 class="cs-hero-title">Supplier & Offer<br>Data Management</h2>
+      <p class="cs-hero-sub">Part of Whole Foods' Centralized Data Management Platform — I mapped 12+ legacy systems before designing anything, and that decision determined whether the new platform would succeed or recreate the same fragmentation in a cleaner wrapper.</p>
+    </div>
+  </div>
+  <div class="cs-content">
+    <div class="cs-container">
+
+      <div class="cs-overview">
+        <p class="cs-overview-text">Whole Foods Market (an Amazon subsidiary) managed supplier and item data across more than a dozen disconnected legacy systems — IRMA, SNIP, ICon NIF, IX-One, FoodLogIQ, and more. I was brought in as Senior Product Designer to lead UX for the supplier and offer data management workflows within a larger Centralized Data Management Platform initiative. My focus: design the system that let teams and suppliers set up, edit, approve, and track item offers — consolidating six separate tools and five intersecting user roles into one trusted interface.</p>
+      </div>
+
+      <div class="cs-meta-row">
+        <div><div class="cs-meta-label">Role</div><div class="cs-meta-val">Senior Product Designer</div></div>
+        <div><div class="cs-meta-label">Company</div><div class="cs-meta-val">Whole Foods Market (Amazon)</div></div>
+        <div><div class="cs-meta-label">Timeline</div><div class="cs-meta-val">2023 – 2024</div></div>
+        <div><div class="cs-meta-label">Scope</div><div class="cs-meta-val">Supplier & Offer Data Workflows</div></div>
+      </div>
+
+      <!-- IMAGE 1: wf-hero-portal.png
+           Figma file: JlxBXbyJHPuGIwgaQrbrHa (WF section)
+           Export: The cover/hero frame of the Whole Foods deck — showing the Item Management
+           Portal with the "Califia Oat Milks" request detail view (Activity & Comments panel,
+           Review Status tracker). This is the full-bleed hero image.
+           To find it: open the WF deck in Figma, go to the first slide.
+           Export at 2x, PNG. -->
+      <img src="./images/Wholefoods.png" class="cs-img lg" style="object-position:center top;" alt="Item Management Portal — offer detail view with activity feed, review status tracker, and request workflow">
+
+      <div class="cs-block">
+        <div class="cs-section-label">The Problem</div>
+        <h3 class="cs-heading">The same data lived in 12 different places. Everyone had a different version of the truth.</h3>
+        <p class="cs-text">Before this initiative, setting up a single new product offer at Whole Foods required a supplier to send forms to a Merchant, who transferred a NIF form into a NISSS submission, which was reviewed by the MIM team, checked by GDO, SCP, and DC review teams — through a combination of email, SharePoint, Excel, Teams, and proprietary forms with names that required a glossary to understand.</p>
+        <p class="cs-text">Each department — merchandising, category management, finance, supply chain — had its own entry point and its own version of the data. The result: redundant work, inconsistent pricing, strained supplier relationships, and difficulty tracing where errors had entered the system. No one owned the whole picture. That was the real problem.</p>
+      </div>
+
+      <!-- IMAGE 2: wf-process-chaos.png
+           Figma file: JlxBXbyJHPuGIwgaQrbrHa | Node: 811:22983
+           Export: The current-state process flow diagram showing all 5 personas (Supplier,
+           Merchant, MIM, GDO, SCP/DC) with all the tools used (SharePoint, SNIP, Teams, Email,
+           Excel, IX-One, FoodLogIQ) and forms (ICon NIF, IRMA NIF, NISSS).
+           This is the most important "before" visual. Export at 2x, PNG. -->
+      <img src="./images/Screenshot 2023-11-22 at 4.07.46 PM.png" class="cs-img lg" style="object-fit:contain;background:#f5f9f5;object-position:center center;" alt="Current-state process flow — 5 personas, 6 forms, and 7 tools tangled across a single offer submission workflow">
+
+      <div class="cs-stats-row">
+        <div class="cs-stat">
+          <div class="cs-stat-num">12+</div>
+          <div class="cs-stat-lbl">legacy systems replaced by one platform</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">5</div>
+          <div class="cs-stat-lbl">intersecting user roles, each with different needs</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">$4M+</div>
+          <div class="cs-stat-lbl">estimated annual cost savings</div>
+        </div>
+      </div>
+
+      <div class="cs-block">
+        <div class="cs-section-label">The Decision That Shaped Everything</div>
+        <h3 class="cs-heading">I spent the first weeks auditing every legacy system before designing anything</h3>
+        <p class="cs-text">The temptation was to jump straight to wireframes. Instead, I made a deliberate call to spend the first weeks of the project auditing every legacy tool — cataloging every data field, every downstream dependency, every team that touched each piece of data. I mapped the current-state flow in full before any design work began.</p>
+        <p class="cs-text">This felt slow. It was the right decision. The audit revealed the root cause: this wasn't a UI problem, it was a <em>data ownership problem</em>. The new platform couldn't just be a cleaner interface — it needed to be a governance system, with role-based views, multi-step approval workflows, and an audit trail that made every data change traceable and accountable. A prettier wrapper on the same broken ownership model would have failed within months.</p>
+        <div class="cs-quote">"The audit revealed that no single team owned the full data picture — and designing around that, rather than past it, was the only approach that would hold."</div>
+      </div>
+
+      <div class="cs-block">
+        <div class="cs-section-label">Design Process</div>
+        <h3 class="cs-heading">Five design sprints, two strategic calls, and one cross-squad initiative I initiated myself</h3>
+        <div class="cs-steps">
+          <div class="cs-step">
+            <div class="cs-step-num">01</div>
+            <div>
+              <div class="cs-step-title">Legacy system audit & current-state mapping</div>
+              <div class="cs-step-desc">Catalogued all data fields, dependencies, and user roles across IRMA, SNIP, ICon NIF, IX-One, FoodLogIQ, and the internal spreadsheet ecosystem. Facilitated journey mapping workshops to visualize cross-team handoffs and identify where data broke down. This became the foundation for all IA decisions.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">02</div>
+            <div>
+              <div class="cs-step-title">The Meridian Design System decision</div>
+              <div class="cs-step-desc">Working as an Amazon subsidiary, I made a deliberate call to adopt Amazon's Meridian Design System rather than building from scratch. This wasn't just an efficiency decision — Whole Foods' platform needed to eventually integrate with Amazon Retail data infrastructure, and Meridian created the architectural groundwork for that. I ran workshops with both WFM and Amazon designers to make it work while preserving Whole Foods' brand identity.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">03</div>
+            <div>
+              <div class="cs-step-title">Cross-squad workshop initiative</div>
+              <div class="cs-step-desc">Recognizing that the platform touched multiple squads with overlapping responsibilities, I initiated several rounds of cross-squad design workshops — something that wasn't standard practice. The goal was to identify UX opportunities, establish shared patterns, and build a culture of consistency across what would become a complex, multi-team product. This is where the error taxonomy was defined before a single error state was designed.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">04</div>
+            <div>
+              <div class="cs-step-title">Five design sprints with usability testing at each stage</div>
+              <div class="cs-step-desc">Offer Detail Page → Edit Single Item → Edit Multiple Items → Offer Setup Workflows → Bulk Offer Edit. Each sprint followed the same rhythm: design mocks, test with users, hand final files to dev. Weekly stakeholder check-ins kept engineering, PM, and business stakeholders aligned throughout.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">05</div>
+            <div>
+              <div class="cs-step-title">Error taxonomy & audit trail design</div>
+              <div class="cs-step-desc">Before designing any error states, I defined an error taxonomy — distinguishing warnings, validation errors, and system alerts. This systems-level decision is what produced the 60% reduction in late-stage validation errors. The audit trail component (showing user, timestamp, and field-level changes) was designed for regulatory compliance, not just usability.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IMAGE 3: wf-timeline.png
+           Figma file: JlxBXbyJHPuGIwgaQrbrHa | Node: 811:22880
+           Export: "UX Design Timeline" slide — the Gantt chart showing the 5 design sprints
+           across weeks of May 8 through June 12, with design principles listed below.
+           PNG, 2x -->
+      <img src="./images/Screenshot 2023-06-23 at 3.35.41 PM.png" class="cs-img md" style="object-fit:contain;background:#fff;" alt="UX Design Timeline — 5 sprint phases from Offer Detail Page through Bulk Offer Edit, May–June 2023">
+
+      <div class="cs-img-row">
+        <!-- IMAGE 4: wf-offer-editing.png
+             Figma file: JlxBXbyJHPuGIwgaQrbrHa | Node: 811:21902
+             Export: "Editing a Single Offer" slide — before/after comparison of the
+             Item Management Portal attribute editing view. PNG, 2x -->
+        <img src="./images/Screenshot 2023-11-28 at 3.39.28 PM.png" class="cs-img md" style="object-position:left top;" alt="Editing a Single Offer — before/after of the Item Management Portal attribute editing interface">
+
+        <!-- IMAGE 5: wf-offer-setup.png
+             Figma file: JlxBXbyJHPuGIwgaQrbrHa | Node: 811:22435
+             Export: "New Offer Setup" slide — file upload workflow with inline error
+             handling, "We found 4 errors" alert, filter sidebar, and offer table.
+             PNG, 2x -->
+        <img src="./images/Screenshot 2023-11-28 at 3.39.28 PM.png" class="cs-img md" style="object-position:right top;" alt="New Offer Setup — file upload with proactive error handling, validation summary, and filter panel">
+      </div>
+
+      <div class="cs-block">
+        <div class="cs-section-label">Results</div>
+        <h3 class="cs-heading">$4M+ saved annually. 200,800+ labor hours returned. One source of truth.</h3>
+        <p class="cs-text">Centralizing supplier and offer data replaced over a dozen legacy tools with a single governed interface — giving all five user roles a trusted, traceable view for the first time. Proactive error handling caught issues upstream rather than at submission, and the new design system slashed the time needed to ship subsequent features.</p>
+      </div>
+
+      <div class="cs-stats-row">
+        <div class="cs-stat">
+          <div class="cs-stat-num">$4M+</div>
+          <div class="cs-stat-lbl">estimated annual cost savings</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">200,800+</div>
+          <div class="cs-stat-lbl">labor hours saved per year</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">−60%</div>
+          <div class="cs-stat-lbl">late-stage validation errors</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">−40%</div>
+          <div class="cs-stat-lbl">offer creation time</div>
+        </div>
+      </div>
+
+      <div class="cs-nav-row">
+        <a href="#justworks" class="cs-nav-link">
+          <div class="cs-nav-lbl">← Previous</div>
+          <div class="cs-nav-title">EOR Cost Calculator</div>
+        </a>
+        <a href="#ledn" class="cs-nav-link right">
+          <div class="cs-nav-lbl">Next →</div>
+          <div class="cs-nav-title">B2X Lending Platform</div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- ============================================================
+       CASE STUDY 3 — LEDN
+  ============================================================ -->
+  <section id="ledn" class="cs-page">
+  <a href="#" class="cs-back">← Back to work</a>
+  <div class="cs-hero cs-hero-ln">
+    <div class="cs-hero-inner">
+      <div class="cs-tags-row">
+        <span class="cs-tag">Ledn</span>
+        <span class="cs-tag">Product Design</span>
+        <span class="cs-tag">Fintech · Crypto</span>
+      </div>
+      <h2 class="cs-hero-title">B2X Lending<br>Platform</h2>
+      <p class="cs-hero-sub">On my first week at Ledn, I opened a real B2X loan and watched the Bitcoin market for a week. That decision shaped every design choice I made after it.</p>
+    </div>
+  </div>
+  <div class="cs-content">
+    <div class="cs-container">
+
+      <div class="cs-overview">
+        <p class="cs-overview-text">Ledn is a digital asset platform — like a bank, but for crypto. Bitcoin savings accounts, USDC yields, Bitcoin-backed loans. The B2X (Bitcoin × 2) product let users borrow against their Bitcoin to buy more Bitcoin, doubling their market exposure. It was Ledn's most profitable product. But the existing interface was a dense modal of unstyled numbers: collateral value, LTV percentage, outstanding balance — displayed without hierarchy, context, or any emotional scaffolding for people making a financially significant decision.</p>
+      </div>
+
+      <div class="cs-meta-row">
+        <div><div class="cs-meta-label">Role</div><div class="cs-meta-val">Product Designer</div></div>
+        <div><div class="cs-meta-label">Company</div><div class="cs-meta-val">Ledn</div></div>
+        <div><div class="cs-meta-label">Timeline</div><div class="cs-meta-val">2021 – 2022</div></div>
+        <div><div class="cs-meta-label">Product</div><div class="cs-meta-val">B2X Loan · Dashboard · KYC</div></div>
+      </div>
+
+      <!-- IMAGE 1: ledn-hero-dashboard.png
+           Figma file: JlxBXbyJHPuGIwgaQrbrHa | Node: 878:36630
+           Export: Frame 626430 — the cover/hero frame of the Ledn deck.
+           Shows the final B2X Loan dashboard: LTV gauge at 61%, loan collateral in BTC,
+           outstanding balance in USD, "TOP-UP COLLATERAL" and "REPAY LOAN" CTAs,
+           plus mobile view on the right.
+           Export at 2x, PNG. This is the hero image. -->
+      <img src="./images/Ledn.png" class="cs-img lg" style="object-position:center top;" alt="B2X Loan dashboard — LTV gauge, real-time collateral tracking, and loan management actions">
+
+      <div class="cs-block">
+        <div class="cs-section-label">The Problem</div>
+        <h3 class="cs-heading">The original platform gave users numbers. It didn't give them understanding.</h3>
+        <p class="cs-text">The existing B2X interface showed loan details in an unstyled modal: two tabs of raw data — collateral required, daily interest, loan amount, administration fee, annual rate, expiry date. Everything was there. Nothing was explained. For a product where a 10% Bitcoin price drop could trigger a margin call and liquidate a user's collateral, "here are the numbers" wasn't enough.</p>
+        <p class="cs-text">Users couldn't track how collateral value moved with the market. They didn't understand what their LTV ratio meant in practice. Margin call warnings existed but were easy to miss. The result: high drop-off in loan applications, high support volume from confused users, and low repeat borrowing — despite strong market conditions.</p>
+      </div>
+
+      <!-- IMAGE 2: ledn-before-modal.png
+           Figma file: JlxBXbyJHPuGIwgaQrbrHa | Node: 878:37787
+           Export: Frame 626420 — "Before" slide showing the original Ledn loan detail modals:
+           Status tab (Loan Collateral: 2 BTC, LTV: 53%, Outstanding Balance: $21,950.41,
+           Top-Up / Repay buttons) and Loan Information tab (raw fee data).
+           Export at 2x, PNG. -->
+      <img src="./images/Screenshot 2023-07-12 at 4.40.53 PM.png" class="cs-img md" style="object-fit:contain;background:#f8f9fa;" alt="Before: original B2X loan detail — two tabs of raw, unstyled financial data with no hierarchy or visual guidance">
+
+      <div class="cs-stats-row">
+        <div class="cs-stat">
+          <div class="cs-stat-num">5/day</div>
+          <div class="cs-stat-lbl">support emails from loan confusion</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">High</div>
+          <div class="cs-stat-lbl">loan application drop-off rate</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">0</div>
+          <div class="cs-stat-lbl">visual indicators of collateral health</div>
+        </div>
+      </div>
+
+      <div class="cs-block">
+        <div class="cs-section-label">The Decision That Shaped Everything</div>
+        <h3 class="cs-heading">On my first week, I put real money into a B2X loan and watched the market for a week</h3>
+        <p class="cs-text">I joined Ledn knowing nothing about crypto lending. Rather than reading documentation, I opened a real B2X account and invested my own money. For one week I watched the Bitcoin price move. I felt the excitement when it climbed and the anxiety when it dropped. I experienced exactly what our users experienced — not through a walkthrough, but through genuine financial exposure.</p>
+        <p class="cs-text">That week gave me something no brief could: a felt understanding of the emotional states the design needed to address. I knew from the inside that the anxiety didn't come from <em>seeing</em> the numbers — it came from not understanding what they <em>meant</em>. That became the design principle that shaped everything: transparency over simplicity. Don't hide the complexity. Explain it.</p>
+        <div class="cs-quote">"Users didn't want complexity hidden from them — they wanted it explained. The anxiety came not from seeing the numbers but from not knowing what to do with them."</div>
+      </div>
+
+      <div class="cs-block">
+        <div class="cs-section-label">Research & Discovery</div>
+        <h3 class="cs-heading">20+ interviews confirmed what I'd already felt firsthand</h3>
+        <p class="cs-text">I ran more than 20 rounds of user interviews and usability testing sessions with retail crypto investors. The findings matched my own experience: users wanted to understand their collateral health at a glance, see exactly when a margin call would be triggered, and know what actions were available to them — without needing to calculate anything themselves.</p>
+        <p class="cs-text">I also audited competitor lending platforms in both crypto and traditional finance, and interviewed internal stakeholders across Customer Success and Compliance. The compliance team's constraint shaped the design as much as user research did: every risk disclosure had to be accurate and prominent, not buried in tooltips or fine print.</p>
+        <div class="cs-findings">
+          <div class="cs-finding">Users understood their loan balance but didn't understand their LTV ratio or what a "healthy" LTV looked like</div>
+          <div class="cs-finding">Margin call warnings existed but were easy to miss — users often discovered them after the fact</div>
+          <div class="cs-finding">First-time borrowers needed more guidance; repeat borrowers needed faster access to management actions</div>
+          <div class="cs-finding">Compliance required risk disclosures to be prominent and plain-language — not hidden in a tooltip</div>
+        </div>
+      </div>
+
+      <div class="cs-block">
+        <div class="cs-section-label">Design Process</div>
+        <h3 class="cs-heading">IA first, then two-stage workshops, then design</h3>
+        <div class="cs-steps">
+          <div class="cs-step">
+            <div class="cs-step-num">01</div>
+            <div>
+              <div class="cs-step-title">Current-state IA before any wireframes</div>
+              <div class="cs-step-desc">Before sketching a single screen, I built a full information architecture map of the existing B2X product — every screen, every state, every decision point. Then I built a future-state IA incorporating the new features. This gave Engineering a clear structural picture before any wireframes existed, eliminating a whole category of late-stage surprises and rework.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">02</div>
+            <div>
+              <div class="cs-step-title">Two-stage ideation workshops</div>
+              <div class="cs-step-desc">I ran a small ideation session first — designers and PM only — to generate ideas freely without engineering constraints. Then a second, larger cross-functional workshop with Engineers and Customer Success using an Impact × Effort matrix to prioritize scope. The MVP feature set came directly from that second session. The sequencing matters: the first session lets ideas breathe, the second grounds them in reality.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">03</div>
+            <div>
+              <div class="cs-step-title">The transparency-first design decisions</div>
+              <div class="cs-step-desc">LTV as a dynamic visual gauge rather than a static percentage — so users could read collateral health at a glance. Proactive margin call alerts shown before liquidation events, not after. Plain-language summaries sitting beside financial terminology throughout the loan flow. Collateral health indicators that visibly moved with the Bitcoin price.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">04</div>
+            <div>
+              <div class="cs-step-title">Prototype testing & iteration</div>
+              <div class="cs-step-desc">Interactive prototypes were tested with first-time retail borrowers and experienced users. I watched where they hesitated, what they ignored, and which moments triggered questions. Each cycle tightened the flow. By the final round, participants could explain their LTV status and next steps without prompting — the specific behavioral signal we'd set as our success criterion.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">05</div>
+            <div>
+              <div class="cs-step-title">Cross-functional compliance alignment</div>
+              <div class="cs-step-desc">Partnered with Engineering to wire live BTC pricing feeds and risk models into the UI. Legal and Compliance reviewed every disclosure and tooltip — clarity couldn't compromise regulatory accuracy. Ran go-live checklists with Support and Ops so alerts, notifications, and handoffs behaved as intended on day one.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-img-row">
+        <!-- IMAGE 3: ledn-workshop-stickies.png
+             Figma file: JlxBXbyJHPuGIwgaQrbrHa (Ledn section)
+             Export: The slide showing real physical workshop photos — four photos of whiteboard
+             sticky note sessions dated Sep 2022, alongside the FigJam Impact × Effort matrix.
+             To find it: open Ledn deck, look for the workshop photo grid slide (approx. slide 9-12
+             in the deck sequence). Export at 2x, PNG. -->
+        <img src="./images/Screenshot 2023-11-22 at 6.06.46 PM.png" class="cs-img md" style="object-fit:contain;background:#fafaf8;" alt="Workshop — physical sticky note sessions (Sep 2022) and FigJam Impact × Effort matrix">
+
+        <!-- IMAGE 4: ledn-ia-diagram.png
+             Figma file: JlxBXbyJHPuGIwgaQrbrHa (Ledn section)
+             Export: The future-state Information Architecture diagram showing:
+             Dashboard Navigation → B2X Loan Overview → Loan table (Active/Next loans),
+             Calculator branch, B2X Active/Inactive Loan pages with feature annotations
+             (LTV Visualization, LTV changes, Referring program).
+             To find it: look for the IA map slide (approx. slide 15-18 in the deck sequence).
+             Export at 2x, PNG. -->
+        <img src="./images/Screenshot 2023-11-22 at 6.06.56 PM.jpg" class="cs-img md" style="object-fit:contain;background:#fafaf8;" alt="Future-state information architecture — B2X loan overview, calculator branch, active and inactive loan pages">
+      </div>
+
+      <div class="cs-block">
+        <div class="cs-section-label">Results</div>
+        <h3 class="cs-heading">Support tickets dropped 92%. B2X became Ledn's most-used product during the 2021 bull market.</h3>
+        <p class="cs-text">Making the loan experience transparent and self-explanatory removed the need for users to reach out for help. Customer support requests dropped from 5 emails per day to 2 per week — a 92% reduction. New loan openings increased and repeat borrowing grew. B2X became Ledn's most-used lending product during the 2021 bull cycle. KYC completion rates improved by 25%.</p>
+      </div>
+
+      <div class="cs-stats-row">
+        <div class="cs-stat">
+          <div class="cs-stat-num">−92%</div>
+          <div class="cs-stat-lbl">support emails (5/day → 2/week)</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">+25%</div>
+          <div class="cs-stat-lbl">KYC onboarding completion rate</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">#1</div>
+          <div class="cs-stat-lbl">most-used Ledn product during 2021 bull market</div>
+        </div>
+        <div class="cs-stat">
+          <div class="cs-stat-num">20+</div>
+          <div class="cs-stat-lbl">user interviews conducted</div>
+        </div>
+      </div>
+
+      <!-- IMAGE 5: ledn-final-screens.png
+           Figma file: JlxBXbyJHPuGIwgaQrbrHa (Ledn section)
+           Export: Look for the high-fidelity final design slide(s) showing the redesigned
+           B2X loan experience — dashboard with LTV gauge, collateral visualization, and
+           loan management screens. This could be a multi-screen overview slide.
+           To find it: look approx. slides 20-27 in the Ledn deck sequence.
+           Export at 2x, PNG. -->
+      <img src="./images/Screenshot 2023-11-28 at 3.39.17 PM.png" class="cs-img lg" style="object-position:center top;" alt="Final design — B2X loan dashboard with LTV visualization, collateral health tracking, and loan management">
+
+      <div class="cs-nav-row">
+        <a href="#wholefoods" class="cs-nav-link">
+          <div class="cs-nav-lbl">← Previous</div>
+          <div class="cs-nav-title">Supplier & Offer Data Management</div>
+        </a>
+        <a href="#lemon" class="cs-nav-link right">
+          <div class="cs-nav-lbl">Next →</div>
+          <div class="cs-nav-title">Lemon · Onboarding & Monetization</div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- ============================================================
+       CASE STUDY 4 — LEMON
+  ============================================================ -->
+  <section id="lemon" class="cs-page">
+    <a href="#" class="cs-back">← Back to work</a>
+    <div class="cs-hero cs-hero-lm">
+      <div class="cs-hero-inner">
+        <div class="cs-tags-row">
+          <span class="cs-tag">Lemon · Futureproof Labs</span>
+          <span class="cs-tag">Growth Design</span>
+          <span class="cs-tag">macOS · AI-Native</span>
+        </div>
+        <h2 class="cs-hero-title">Onboarding &<br>Monetization</h2>
+        <p class="cs-hero-sub">I changed the roadmap before I changed the design — pulled retention data after a viral launch and argued we needed to fix the leaky bucket before adding features.</p>
+      </div>
+    </div>
+    <div class="cs-content">
+      <div class="cs-container">
+
+        <div class="cs-overview">
+          <p class="cs-overview-text">Lemon is a macOS productivity app that lives in the menu bar notch and uses AI to capture, transcribe, and act on what you say and see — turning interruptions into decisions. After a viral Product Hunt launch, I joined as Lead Product Designer. The metrics told a different story than the excitement: less than 30% of users came back after 48 hours. Before I touched Figma, I changed the roadmap.</p>
+        </div>
+
+        <div class="cs-meta-row">
+          <div><div class="cs-meta-label">Role</div><div class="cs-meta-val">Lead Product Designer</div></div>
+          <div><div class="cs-meta-label">Company</div><div class="cs-meta-val">Futureproof Labs / Lemon</div></div>
+          <div><div class="cs-meta-label">Timeline</div><div class="cs-meta-val">April – May 2026</div></div>
+          <div><div class="cs-meta-label">Focus</div><div class="cs-meta-val">Onboarding · Monetization · Retention</div></div>
+        </div>
+
+        <img src="./images/v8-welcome.png" class="cs-img lg" style="object-position:center top;" alt="Lemon V8 — notch onboarding on real Mac desktop, the product introducing itself exactly where it lives">
+
+        <!-- ── ACT 1: THE STRATEGIC CALL ── -->
+        <div class="cs-block">
+          <div class="cs-section-label">Act 1 — The Strategic Call</div>
+          <h3 class="cs-heading">The launch went viral. I pumped the brakes.</h3>
+          <p class="cs-text">Feature requests were piling in, the roadmap was filling up, and the team's instinct was to build faster. I looked at a different number: less than 30% of new users came back in the first 48 hours. We were filling a leaky bucket.</p>
+          <p class="cs-text">I went deeper — segmented retention by acquisition channel, identified the percentage of users who had made zero API calls after completing onboarding, and researched how Wispr Flow (our closest competitor) had reached 20% free-to-paid conversion. They didn't get there by shipping features. They got there by obsessing over whether users retained the core value first.</p>
+          <div class="cs-quote">"Even if we make the best product in the universe — if we can't keep new users coming back, it's worthless. Retention before features."</div>
+          <p class="cs-text">I synthesized 103 Slack messages across 9 team channels into a product insights deck, used it to make the data-backed argument, and the roadmap changed. From that point on, I shipped a new onboarding version every week with controlled groups, measuring what actually moved retention.</p>
+        </div>
+
+        <div class="cs-stats-row">
+          <div class="cs-stat">
+            <div class="cs-stat-num">&lt;30%</div>
+            <div class="cs-stat-lbl">retention at 48 hours when I joined</div>
+          </div>
+          <div class="cs-stat">
+            <div class="cs-stat-num">8</div>
+            <div class="cs-stat-lbl">onboarding versions shipped in 5 weeks</div>
+          </div>
+          <div class="cs-stat">
+            <div class="cs-stat-num">4</div>
+            <div class="cs-stat-lbl">monetization moment categories designed</div>
+          </div>
+          <div class="cs-stat">
+            <div class="cs-stat-num">0→1</div>
+            <div class="cs-stat-lbl">entire upgrade system built from scratch</div>
+          </div>
+        </div>
+
+        <!-- ── ACT 2: ONBOARDING ── -->
+        <div class="cs-block">
+          <div class="cs-section-label">Act 2 — The Onboarding Solution</div>
+          <h3 class="cs-heading">Give before get — and let the medium teach</h3>
+          <p class="cs-text">The diagnosis was clear: the original flow was "get before give." It asked for permissions, role, and preferences before showing users anything of value. The fix wasn't visual — it was a philosophy: show users what Lemon does for them before asking for anything. When they feel the value first, granting permissions feels like unlocking something they want, not a gate they're being pushed through.</p>
+          <p class="cs-text">Five weeks of A/B tests on split-panel designs (V1–V6) gave incremental wins. Then on April 29 came the real insight: Lemon lives in the Mac notch. A full-screen onboarding window was already breaking the product's promise before the user had started. I abandoned five weeks of work and designed the entire 23-screen flow to live inside the notch, floating over the user's real desktop. The UI container became the teacher.</p>
+          <div class="cs-findings">
+            <div class="cs-finding">V5 was the best conventional approach — full-screen, clean, polished — but the wrong medium for a product that promises "no new windows"</div>
+            <div class="cs-finding">V8 insight: the notch expands on the actual desktop, introducing itself exactly as it will always live — invisible, always there</div>
+            <div class="cs-finding">Screen 12: when screen recording permission is requested, the wallpaper itself turns golden-yellow — Lemon demonstrates the permission instead of explaining it</div>
+            <div class="cs-finding">Screen 19 "Speed Receipt": "You just saved 43 minutes" appears immediately after the aha moment, with the trip plan still visible behind it</div>
+          </div>
+        </div>
+
+        <div class="cs-img-row">
+          <img src="./images/v5-welcome.png" class="cs-img md" style="object-fit:contain;background:#f0ede8;" alt="V5 — best conventional approach: full-screen split panel onboarding">
+          <img src="./images/v8-welcome.png" class="cs-img md" style="object-fit:contain;background:#1a2a1c;" alt="V8 — the medium is the message: notch onboarding on real Mac desktop">
+        </div>
+
+        <div class="cs-img-row">
+          <img src="./images/v8-interrupted.png" class="cs-img md" style="object-fit:contain;background:#1c1c1e;" alt="Screen 2 — You're not slow. You're just interrupted. Empathy before pitch.">
+          <img src="./images/v8-screen-seeing.png" class="cs-img md" style="object-fit:contain;background:#1c1c1e;" alt="Screen 12 — I can see your screen. Wallpaper turns yellow to demonstrate the permission.">
+        </div>
+
+        <div class="cs-img-row">
+          <img src="./images/v8-result.png" class="cs-img md" style="object-fit:contain;background:#1c1c1e;" alt="Screen 18 — The aha moment: live dictation result">
+          <img src="./images/v8-speed-receipt.png" class="cs-img md" style="object-fit:contain;background:#1c1c1e;" alt="Screen 19 — Speed Receipt: 43 minutes saved, shown immediately after the demo">
+        </div>
+
+        <!-- ── ACT 3: MONETIZATION ── -->
+        <div class="cs-block">
+          <div class="cs-section-label">Act 3 — The Monetization System</div>
+          <h3 class="cs-heading">The team wanted a cold email. I built an empathy system instead.</h3>
+          <p class="cs-text">The original plan: send an email to all existing users announcing the free trial was ending and they'd need to pay. No lead-up, no context, no empathy. I pushed back hard — researching how Wispr, Raycast, Superhuman, and Notion handled conversion, and making the case that paywalls that feel like punishment kill conversion while paywalls that feel like opportunity drive it.</p>
+          <p class="cs-text">The team heard it. They pushed back the trial end date. And I designed the upgrade experience from scratch — with no prior monetization layer existing in the product at all.</p>
+          <div class="cs-quote">"We don't want to give users surprises like this. Monetization is a sensitive moment — it needs to be treated with the most empathy and transparency."</div>
+          <p class="cs-text">Rather than a single paywall, I designed 16 distinct upgrade moments organized into four categories: <strong>Lifecycle</strong> (transparent about time), <strong>Gates</strong> (usage limits), <strong>Value</strong> (what Lemon did for you), and <strong>Relationship</strong> (habit and recognition). Every single one leads with celebration or empathy before the ask.</p>
+        </div>
+
+        <!-- streak-banner is a wide short notification — display at natural aspect ratio, full width -->
+        <img src="./images/dash-streak-banner.png" class="cs-img" alt="Relationship — 7-day streak celebration: celebrates the habit before asking to protect it">
+
+        <!-- two square-ish cards side by side, both contained so no cropping -->
+        <div class="cs-img-row">
+          <img src="./images/dash-stats-reveal.png" class="cs-img md" style="object-fit:contain;background:#111;" alt="Value — Look what you built in 14 days: 147 tasks, 88 mins saved, before mentioning Pro">
+          <img src="./images/dash-trial-end-modal.png" class="cs-img md" style="object-fit:contain;background:#f5f5f3;" alt="Trial end — leads with accomplishments (147 tasks, 88 mins saved) before explaining free vs paid">
+        </div>
+
+        <!-- full Mac window — contained so the full app context is visible -->
+        <img src="./images/dash-trial-2days.png" class="cs-img" style="height:440px;object-fit:contain;background:#f0ede8;" alt="Lifecycle — Trial ending in 2 days: transparent countdown with value context">
+
+        <!-- small notification card — capped at natural width, centered -->
+        <div style="max-width:640px;margin:48px auto 0;">
+          <img src="./images/dash-post-success.png" class="cs-img" style="margin-top:0;" alt="Post-success float — celebrates 3 minutes saved first, then mentions unlimited access. Auto-dismisses in 8 seconds.">
+        </div>
+
+        <!-- ── ACT 4: DESIGN SYSTEM ── -->
+        <div class="cs-block">
+          <div class="cs-section-label">Act 4 — Design System</div>
+          <h3 class="cs-heading">The "give before get" philosophy only works if it's consistent everywhere</h3>
+          <p class="cs-text">Alongside the onboarding and monetization work, I audited the entire production design system — finding 15 missing components, wrong font references (Solway instead of Inter), and green colors that violated the brand. The resulting specification document, including dark mode tokens and a complete component library, ensures the empathy-first philosophy is consistent across every screen, not just the ones I personally touched.</p>
+          <p class="cs-text">All 23 onboarding screens were designed using the Figma MCP directly on canvas. I built a custom Claude Code skill for multi-direction ideation, proposing 7 new screens (Speed Receipt, Notch Dictionary, Taste Profile) and building all approved ones in a single session. Weekly prototype delivery included HTML animations for each use case sequence.</p>
+        </div>
+
+        <div class="cs-steps">
+          <div class="cs-step">
+            <div class="cs-step-num">🎁</div>
+            <div>
+              <div class="cs-step-title">Give before get</div>
+              <div class="cs-step-desc">Show value before asking for permissions, data, money, or personalization. Applied consistently from screen 1 of onboarding to the final upgrade modal.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">📊</div>
+            <div>
+              <div class="cs-step-title">Data drives direction</div>
+              <div class="cs-step-desc">V8 was triggered by a drop-off node in the analytics. The retention argument was built on segmented channel data. Surveys measured willingness to pay at peak intent moments.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">🔦</div>
+            <div>
+              <div class="cs-step-title">The medium is the message</div>
+              <div class="cs-step-desc">The notch IS the product. Onboarding lives where the product lives. Form and function teach the same thing — so the product's promise is never broken before the user has started.</div>
+            </div>
+          </div>
+          <div class="cs-step">
+            <div class="cs-step-num">💬</div>
+            <div>
+              <div class="cs-step-title">Empathy is a strategy</div>
+              <div class="cs-step-desc">Acknowledging user pain before pitching. Celebrating what users built before asking them to pay. This isn't softness — it's the mechanism that makes conversion work.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="cs-block">
+          <div class="cs-section-label">Results</div>
+          <h3 class="cs-heading">8 tested versions. A full monetization system. A changed roadmap.</h3>
+          <p class="cs-text">In five weeks: 8 onboarding iterations shipped with A/B test infrastructure, 16 upgrade moments designed across 4 categories, the entire upgrade system built from zero, and a design system audit that brought consistency across all product surfaces. The strategic call to prioritize retention over features created the foundation the product needed before growth would compound.</p>
+        </div>
+
+        <div class="cs-nav-row">
+          <a href="#ledn" class="cs-nav-link">
+            <div class="cs-nav-lbl">← Previous</div>
+            <div class="cs-nav-title">B2X Lending Platform</div>
+          </a>
+          <a href="#" class="cs-nav-link right">
+            <div class="cs-nav-lbl">↑ Back to top</div>
+            <div class="cs-nav-title">All Work</div>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       ABOUT PAGE
+  ============================================================ -->
+  <section id="about" class="about-page">
+
+    <!-- Same garden grid as hero -->
+    <div class="about-bg-grid"></div>
+
+    <!-- Floating pixel flowers -->
+    <div class="about-floating-flowers">
+      <div class="hero-flower float-slow delay-200" style="top:10%;right:14%;width:34px;height:34px;opacity:0.7;">
+        <svg viewBox="0 0 12 16" class="pixel-art" style="width:100%;height:100%;display:block;">
+          <rect x="4" y="0" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="8" width="4" height="4" fill="#FFD700"/>
+          <rect x="0" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="8" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="4" width="4" height="4" fill="#5C3317"/>
+          <rect x="4" y="12" width="4" height="4" fill="#008631"/>
+        </svg>
+      </div>
+      <div class="hero-flower float-medium delay-500" style="top:7%;left:9%;width:22px;height:22px;opacity:0.55;">
+        <svg viewBox="0 0 12 16" class="pixel-art" style="width:100%;height:100%;display:block;">
+          <rect x="4" y="0" width="4" height="4" fill="#008631"/>
+          <rect x="4" y="8" width="4" height="4" fill="#008631"/>
+          <rect x="0" y="4" width="4" height="4" fill="#008631"/>
+          <rect x="8" y="4" width="4" height="4" fill="#008631"/>
+          <rect x="4" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="12" width="4" height="4" fill="#004d40"/>
+        </svg>
+      </div>
+      <div class="hero-flower float-fast delay-700" style="top:42%;right:7%;width:18px;height:18px;opacity:0.45;">
+        <svg viewBox="0 0 12 16" class="pixel-art" style="width:100%;height:100%;display:block;">
+          <rect x="4" y="0" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="8" width="4" height="4" fill="#FFD700"/>
+          <rect x="0" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="8" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="4" width="4" height="4" fill="#004d40"/>
+          <rect x="4" y="12" width="4" height="4" fill="#008631"/>
+        </svg>
+      </div>
+      <div class="hero-flower float-slow delay-1000" style="bottom:24%;left:7%;width:28px;height:40px;opacity:0.6;">
+        <svg viewBox="0 0 12 20" class="pixel-art" style="width:100%;height:100%;display:block;">
+          <rect x="4" y="0" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="8" width="4" height="4" fill="#FFD700"/>
+          <rect x="0" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="8" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="4" width="4" height="4" fill="#004d40"/>
+          <rect x="4" y="12" width="4" height="8" fill="#008631"/>
+          <rect x="8" y="14" width="2" height="2" fill="#008631"/>
+        </svg>
+      </div>
+      <div class="hero-flower float-medium delay-300" style="bottom:12%;right:18%;width:16px;height:16px;opacity:0.4;">
+        <svg viewBox="0 0 12 16" class="pixel-art" style="width:100%;height:100%;display:block;">
+          <rect x="4" y="0" width="4" height="4" fill="#008631"/>
+          <rect x="4" y="8" width="4" height="4" fill="#008631"/>
+          <rect x="0" y="4" width="4" height="4" fill="#008631"/>
+          <rect x="8" y="4" width="4" height="4" fill="#008631"/>
+          <rect x="4" y="4" width="4" height="4" fill="#FFD700"/>
+          <rect x="4" y="12" width="4" height="4" fill="#004d40"/>
+        </svg>
+      </div>
+    </div>
+
+    <a href="#" class="cs-back">← Back</a>
+
+    <div class="about-wrap">
+
+      <div style="padding-top:32px;">
+        <div class="about-eyebrow">Product Designer · Toronto, ON</div>
+        <h1 class="about-name">Ivy Liu</h1>
+        <p class="about-intro">Eight years of product design — from enterprise compliance systems to AI-native 0→1 launches. Fluent in the full UX toolkit, comfortable in ambiguity, and most energized when there's no clear playbook yet. Data tells me where to look; judgment tells me what to build.</p>
+      </div>
+
+      <div class="about-contact">
+        <span class="about-contact-label">Say hi</span>
+        <a href="mailto:ly401903@gmail.com">ly401903@gmail.com</a>
+        <span class="about-contact-dot">·</span>
+        <a href="https://www.linkedin.com/in/ivyliu0210" target="_blank">LinkedIn</a>
+      </div>
+
+      <hr class="about-rule">
+
+      <div>
+        <div class="about-eyebrow">Experience</div>
+        <div class="about-tl">
+
+          <div class="about-tl-row">
+            <span class="about-tl-year">2026 – Now</span>
+            <div>
+              <div class="about-tl-role">Lead Product Designer</div>
+              <div class="about-tl-company">HeyLemon.ai</div>
+              <div class="about-tl-note">Voice AI agent · 0→1 from concept through public launch · #3 Product of the Day on Product Hunt</div>
+            </div>
+          </div>
+
+          <div class="about-tl-row">
+            <span class="about-tl-year">2024 – 25</span>
+            <div>
+              <div class="about-tl-role">Product Designer II, Growth</div>
+              <div class="about-tl-company">Justworks</div>
+              <div class="about-tl-note">EOR & global payroll UX · quoting from 1 hour → seconds · 15% conversion lift</div>
+            </div>
+          </div>
+
+          <div class="about-tl-row">
+            <span class="about-tl-year">2023 – 24</span>
+            <div>
+              <div class="about-tl-role">Senior Product Designer, Enterprise</div>
+              <div class="about-tl-company">Whole Foods Market</div>
+              <div class="about-tl-note">Replaced 12+ legacy systems · $4M+ annual savings · 200,000+ labor hours reduced</div>
+            </div>
+          </div>
+
+          <div class="about-tl-row">
+            <span class="about-tl-year">2022 – 23</span>
+            <div>
+              <div class="about-tl-role">Product Designer, Monetization</div>
+              <div class="about-tl-company">Ledn</div>
+              <div class="about-tl-note">Crypto lending UX · 25% onboarding lift · 30% support reduction</div>
+            </div>
+          </div>
+
+          <div class="about-tl-row">
+            <span class="about-tl-year">2018 – 22</span>
+            <div>
+              <div class="about-tl-role">Product Designer</div>
+              <div class="about-tl-company">Flybits · QuadFi · ISDOP</div>
+              <div class="about-tl-note">FinTech & SocialTech startups across Toronto</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <hr class="about-rule">
+
+      <div>
+        <div class="about-eyebrow">Education</div>
+        <div class="about-edu-row">
+          <span class="about-edu-name">OCAD University — Bachelor of Design</span>
+          <span class="about-edu-year">2015 – 2019</span>
+        </div>
+      </div>
+
+      <hr class="about-rule">
+
+      <div>
+        <div class="about-eyebrow">Tools & Skills</div>
+        <div class="about-skill-groups">
+
+          <div>
+            <div class="about-skill-cat">Expertise</div>
+            <div class="about-pills">
+              <span class="about-pill">Complex workflow design</span>
+              <span class="about-pill">End-to-end product UX</span>
+              <span class="about-pill">Interaction design</span>
+              <span class="about-pill">Information architecture</span>
+              <span class="about-pill">Design systems</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="about-skill-cat">Research & Strategy</div>
+            <div class="about-pills">
+              <span class="about-pill">User interviews</span>
+              <span class="about-pill">Usability testing</span>
+              <span class="about-pill">Product discovery</span>
+              <span class="about-pill">Journey mapping</span>
+              <span class="about-pill">A/B & multivariate testing</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="about-skill-cat">Tools & AI Workflow</div>
+            <div class="about-pills">
+              <span class="about-pill">Figma</span>
+              <span class="about-pill">FigJam</span>
+              <span class="about-pill">Adobe Creative Suite</span>
+              <span class="about-pill">Miro</span>
+              <span class="about-pill">Framer / Cursor</span>
+              <span class="about-pill">Vibe coding</span>
+              <span class="about-pill">AI-assisted design</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="about-skill-cat">Systems & Platforms</div>
+            <div class="about-pills">
+              <span class="about-pill">Design tokens</span>
+              <span class="about-pill">Component libraries</span>
+              <span class="about-pill">Accessibility (WCAG)</span>
+              <span class="about-pill">SaaS platform design</span>
+              <span class="about-pill">Developer-facing products</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <script>
+    /* ================================================================
+       STACKING CARDS — sticky pile + scroll-progress pixel garden
+    ================================================================ */
+    (function () {
+      /* ── Seeded PRNG per column — same plant at same x, always ── */
+      function prng(seed) {
+        return function () {
+          seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+          let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+          t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+          return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+      }
+
+      const PX         = 4;
+      const COL_W      = 18;
+      const STEM_DARK  = '#005A1E';
+      const STEM_MID   = '#007A2A';
+      const STEM_LITE  = '#3DAF5C';
+      const PETAL_GOLD = '#FFD700';
+      const PETAL_PINK = '#FF6B9D';
+      const PETAL_LAVENDER = '#B48EE8';
+      const CENTER_BRN = '#5C3317';
+      const SOIL       = 'rgba(0,80,0,0.12)';
+
+      /* ── Grass blade: leaning graceful blade with bright tip ── */
+      function drawGrassBlade(ctx, x, baseY, rand) {
+        const h     = (Math.floor(rand() * 4) + 4) * PX;   // 16–28 px
+        const lean  = rand() > 0.5 ? 1 : -1;
+        const split = Math.floor(h * 0.55);                 // lower straight / upper leaning
+
+        ctx.fillStyle = STEM_MID;
+        ctx.fillRect(x, baseY - split, PX, split);                              // straight lower
+        ctx.fillRect(x + lean * PX, baseY - h + PX, PX, h - split - PX);       // leaning upper
+
+        ctx.fillStyle = STEM_LITE;
+        ctx.fillRect(x + lean * PX,     baseY - h, PX, PX);                    // tip
+        ctx.fillRect(x + lean * PX * 2, baseY - h - PX, PX, PX);              // extra tip pixel
+      }
+
+      /* ── Flower: proper pixel-art flower with stem, leaf, 5-petal blossom ── */
+      function drawFlower(ctx, x, baseY, rand) {
+        const stemH = (Math.floor(rand() * 5) + 5) * PX;  // 20–36 px stem
+        const petalColors = [PETAL_GOLD, PETAL_PINK, PETAL_LAVENDER];
+        const petal  = petalColors[Math.floor(rand() * petalColors.length)];
+        const center = petal === PETAL_GOLD ? CENTER_BRN : PETAL_GOLD;
+        const bx     = x + PX;   // stem/blossom center x
+
+        // Stem
+        ctx.fillStyle = STEM_DARK;
+        ctx.fillRect(bx, baseY - stemH, PX, stemH);
+
+        // Leaf on stem
+        const leafY   = baseY - Math.floor(stemH * 0.44);
+        const leafDir = rand() > 0.5 ? 1 : -1;
+        ctx.fillStyle = STEM_MID;
+        ctx.fillRect(bx + leafDir * PX,      leafY - PX, PX, PX * 2);  // body
+        ctx.fillRect(bx + leafDir * PX * 2,  leafY - PX, PX, PX);      // tip
+
+        // Blossom top: 5-petal cross
+        const by = baseY - stemH - PX;  // bottom row of blossom
+        ctx.fillStyle = petal;
+        ctx.fillRect(bx,      by - PX * 2, PX, PX);   // top
+        ctx.fillRect(bx,      by,          PX, PX);   // bottom
+        ctx.fillRect(bx - PX, by - PX,     PX, PX);   // left
+        ctx.fillRect(bx + PX, by - PX,     PX, PX);   // right
+
+        // Center pixel
+        ctx.fillStyle = center;
+        ctx.fillRect(bx, by - PX, PX, PX);
+
+        // Diagonal petals — 65% of flowers get these (fuller blossom)
+        if (rand() > 0.35) {
+          ctx.fillStyle = petal;
+          ctx.globalAlpha = 0.60;
+          ctx.fillRect(bx - PX, by - PX * 2, PX, PX);   // top-left
+          ctx.fillRect(bx + PX, by - PX * 2, PX, PX);   // top-right
+          ctx.fillRect(bx - PX, by,           PX, PX);   // bottom-left
+          ctx.fillRect(bx + PX, by,           PX, PX);   // bottom-right
+          ctx.globalAlpha = 1;
+        }
+      }
+
+      /* ── Single unified draw — fills left→right up to `progress` (0–1) ── */
+      function drawCanvas(progress) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (progress <= 0.002) return;
+
+        const filledW = canvas.width * progress;
+        const baseY   = canvas.height;
+
+        // Each column seeded by its x-index so plants never change as bar grows
+        for (let cx = 0; cx < filledW - PX; cx += COL_W) {
+          const rand = prng(Math.round(cx / COL_W) * 997 + 31);
+          const r = rand();
+          if (r < 0.10) {
+            drawFlower(ctx, cx, baseY, rand);        // ~10 % — clearly visible
+          } else if (r < 0.36) {
+            drawGrassBlade(ctx, cx, baseY, rand);    // ~26 % — fills between
+          }
+          // ~64 % — breathing room
+        }
+      }
+
+      /* ── DOM refs ── */
+      const section  = document.getElementById('cards-section');
+      const shells   = Array.from(section.querySelectorAll('.card-shell'));
+      const dots     = document.querySelectorAll('.scroll-dot');
+      const dotsWrap = document.getElementById('scroll-dots');
+      const canvas   = document.getElementById('foliage-canvas');
+      const ctx      = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = false;
+
+      const GAP = 40, TOP = 56, SCALE_STEP = 0.028;
+
+      /* ── Effective scroll total: measured once at load before sticky activates.
+            = natural distance from section top to last card top, minus last card's
+            sticky threshold. This is exactly the scroll at which card 4 pins. ── */
+      function calcEffectiveTotal() {
+        const sR = section.getBoundingClientRect();
+        const lI = shells.length - 1;
+        const lR = shells[lI].getBoundingClientRect();
+        const naturalRel = lR.top - sR.top;          // natural offset within section
+        const thresh     = TOP + lI * GAP;            // last card's sticky top
+        const et = naturalRel - thresh;
+        return et > 0 ? et : section.offsetHeight - window.innerHeight;
+      }
+      let effectiveTotal = calcEffectiveTotal();
+      window.addEventListener('resize', () => { effectiveTotal = calcEffectiveTotal(); });
+
+      /* ── Canvas resize ── */
+      function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        if (rect.width > 0) {
+          canvas.width  = Math.round(rect.width);
+          canvas.height = 96;
+          ctx.imageSmoothingEnabled = false;
+        }
+      }
+      window.addEventListener('resize', () => { resizeCanvas(); drawCanvas(progressCurrent); });
+      resizeCanvas();
+
+      /* ── Animated progress (single 0→1 value) ── */
+      let progressTarget  = 0;
+      let progressCurrent = 0;
+      let rafId = null;
+
+      function scheduleRaf() {
+        if (!rafId) rafId = requestAnimationFrame(tick);
+      }
+
+      function tick() {
+        rafId = null;
+        const diff = progressTarget - progressCurrent;
+        if (Math.abs(diff) > 0.0005) {
+          progressCurrent += diff * 0.10;
+          scheduleRaf();
+        } else {
+          progressCurrent = progressTarget;
+        }
+        drawCanvas(progressCurrent);
+      }
+
+      /* ── Active card (for scale + dots) ── */
+      function getActive() {
+        let active = 0;
+        shells.forEach((shell, i) => {
+          if (shell.getBoundingClientRect().top <= TOP + i * GAP + 1) active = i;
+        });
+        return active;
+      }
+
+      function onScroll() {
+        const secRect   = section.getBoundingClientRect();
+        const inSection = secRect.top < window.innerHeight && secRect.bottom > 0;
+        dotsWrap.classList.toggle('visible', inSection);
+        if (!inSection) return;
+
+        progressTarget = Math.max(0, Math.min(1, -secRect.top / effectiveTotal));
+
+        const active = getActive();
+        shells.forEach((shell, i) => {
+          const depth = active - i;
+          if (depth > 0) {
+            const s = Math.max(0.88, 1 - depth * SCALE_STEP);
+            shell.style.transform = `scale(${s})`;
+            shell.style.boxShadow = `0 ${2 + depth * 6}px ${40 + depth * 10}px rgba(0,0,0,${0.06 + depth * 0.04})`;
+          } else {
+            shell.style.transform = '';
+            shell.style.boxShadow = '';
+          }
+        });
+
+        dots.forEach((d, i) => d.classList.toggle('active', i === active));
+        scheduleRaf();
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }());
+
+
+    /* ================================================================
+       CASE STUDY NAVIGATION
+    ================================================================ */
+    (function () {
+      const landing     = document.getElementById('landing-content');
+      const caseStudies = document.querySelectorAll('.cs-page');
+      const aboutPage   = document.getElementById('about');
+
+      function hideAll() {
+        caseStudies.forEach(cs => cs.style.display = 'none');
+        aboutPage.style.display = 'none';
+      }
+
+      function showLanding() {
+        hideAll();
+        landing.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
+
+      function showCase(id) {
+        landing.style.display = 'none';
+        hideAll();
+        const target = document.getElementById(id);
+        if (target) {
+          target.style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+      }
+
+      function showAbout() {
+        landing.style.display = 'none';
+        hideAll();
+        aboutPage.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
+
+      /* "View Case Study" CTAs on the landing cards */
+      document.querySelectorAll('.slide-cta').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.preventDefault();
+          showCase(btn.getAttribute('href').replace('#', ''));
+        });
+      });
+
+      /* Nav dropdown items */
+      document.querySelectorAll('.nav-dropdown-item').forEach(item => {
+        item.addEventListener('click', e => {
+          e.preventDefault();
+          showCase(item.getAttribute('href').replace('#', ''));
+        });
+      });
+
+      /* About nav link */
+      document.querySelector('.nav-link-about').addEventListener('click', e => {
+        e.preventDefault();
+        showAbout();
+      });
+
+      /* "← Back" at top of each case study and about page */
+      document.querySelectorAll('.cs-back').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.preventDefault();
+          showLanding();
+        });
+      });
+
+      /* Previous / Next links inside case studies */
+      document.querySelectorAll('.cs-nav-link').forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const href = link.getAttribute('href');
+          if (!href || href === '#') {
+            showLanding();
+          } else {
+            showCase(href.replace('#', ''));
+          }
+        });
+      });
+    }());
+
+
+    /* ================================================================
+       SLOGAN — scroll-triggered word reveal + typewriter scramble + parallax
+    ================================================================ */
+    (function () {
+      const CHARS    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*?';
+      const section  = document.getElementById('slogan-section');
+      const line0    = document.getElementById('slogan-line-0');
+      const line1    = document.getElementById('slogan-line-1');
+      const deco     = document.getElementById('slogan-deco');
+      const allWords = Array.from(section.querySelectorAll('.slogan-word'));
+      let triggered  = false;
+
+      function scramble(el, finalText, delay) {
+        setTimeout(() => {
+          el.classList.add('revealed');
+          let frame = 0;
+          const totalFrames = 18;
+          const interval = setInterval(() => {
+            if (frame >= totalFrames) {
+              el.textContent = finalText;
+              clearInterval(interval);
+              return;
+            }
+            const progress = frame / totalFrames;
+            el.textContent = finalText.split('').map((ch, i) => {
+              if (ch === ' ') return ' ';
+              if (i / finalText.length < progress) return ch;
+              return CHARS[Math.floor(Math.random() * CHARS.length)];
+            }).join('');
+            frame++;
+          }, 40);
+        }, delay);
+      }
+
+      function reveal() {
+        if (triggered) return;
+        triggered = true;
+        allWords.forEach((word, i) => {
+          scramble(word, word.dataset.text, i * 160);
+        });
+        setTimeout(() => deco && deco.classList.add('revealed'), allWords.length * 160 + 200);
+      }
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) reveal(); });
+      }, { threshold: 0.25 });
+      observer.observe(section);
+
+      const SPEED_0 =  0.06;
+      const SPEED_1 = -0.04;
+      function onScroll() {
+        const rect   = section.getBoundingClientRect();
+        const center = rect.top + rect.height / 2 - window.innerHeight / 2;
+        if (line0) line0.style.transform = `translateY(${center * SPEED_0}px)`;
+        if (line1) line1.style.transform = `translateY(${center * SPEED_1}px)`;
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }());
+
+
+    /* ================================================================
+       CUSTOM CURSOR — leaf pointer + pixel flower on link/button hover
+    ================================================================ */
+    (function () {
+      const cursor    = document.getElementById('leaf-cursor');
+      const leafSvg   = document.getElementById('cursor-leaf');
+      const flowerSvg = document.getElementById('cursor-flower');
+
+      const LEAF_OX = 9, LEAF_OY = 1;
+      const FLOWER_OX = 12, FLOWER_OY = 12;
+      let isHover = false;
+
+      function place(mx, my) {
+        const ox = isHover ? FLOWER_OX : LEAF_OX;
+        const oy = isHover ? FLOWER_OY : LEAF_OY;
+        cursor.style.transform = `translate(${mx - ox}px,${my - oy}px)`;
+      }
+
+      document.addEventListener('mousemove', e => place(e.clientX, e.clientY));
+      document.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'translate(-200px,-200px)';
+      });
+
+      document.addEventListener('pointerover', e => {
+        const over = !!e.target.closest('a, button');
+        if (over !== isHover) {
+          isHover = over;
+          leafSvg.style.display   = isHover ? 'none'  : 'block';
+          flowerSvg.style.display = isHover ? 'block' : 'none';
+        }
+      });
+    }());
+
+
+    /* ================================================================
+       HELIOTROPISM — sunlight aura canvas
+    ================================================================ */
+    (function () {
+      const heroEl = document.querySelector('.hero-viewport');
+      const canvas = document.getElementById('helio-aura');
+      const ctx    = canvas.getContext('2d');
+
+      let W, H;
+      function resize() {
+        const r = heroEl.getBoundingClientRect();
+        W = canvas.width  = Math.round(r.width);
+        H = canvas.height = Math.round(r.height);
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      let rawX = -500, rawY = -500, inHero = false;
+      let aX = -500, aY = -500;
+      const LERP = 0.08, RADIUS = 260;
+
+      document.addEventListener('mousemove', e => {
+        const r = heroEl.getBoundingClientRect();
+        inHero = e.clientY >= r.top && e.clientY <= r.bottom &&
+                 e.clientX >= r.left && e.clientX <= r.right;
+        rawX = e.clientX - r.left;
+        rawY = e.clientY - r.top;
+      });
+      document.addEventListener('mouseleave', () => { inHero = false; });
+
+      function auraLoop() {
+        aX += (rawX - aX) * LERP;
+        aY += (rawY - aY) * LERP;
+        ctx.clearRect(0, 0, W, H);
+        if (inHero || Math.hypot(aX - rawX, aY - rawY) > 2) {
+          const g = ctx.createRadialGradient(aX, aY, 0, aX, aY, RADIUS);
+          g.addColorStop(0,    'rgba(255,251,210,0.68)');
+          g.addColorStop(0.22, 'rgba(255,252,225,0.44)');
+          g.addColorStop(0.50, 'rgba(245,252,235,0.20)');
+          g.addColorStop(0.78, 'rgba(235,250,235,0.07)');
+          g.addColorStop(1,    'rgba(255,255,255,0.00)');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, W, H);
+        }
+        requestAnimationFrame(auraLoop);
+      }
+      auraLoop();
+    }());
+
+
+    /* ================================================================
+       HELIOTROPISM — spring physics on floating + title flowers
+    ================================================================ */
+    (function () {
+      const heroEl = document.querySelector('.hero-viewport');
+
+      // Background floating flowers
+      const bgFlowers = ['hf-0','hf-1','hf-2','hf-3','hf-4','hf-5','hf-6']
+        .map(id => document.getElementById(id)).filter(Boolean);
+      bgFlowers.forEach(el => { el._vx=0; el._vy=0; el._ox=0; el._oy=0; });
+
+      // Title "I" and "i" flowers — gentler params
+      const titleFlowers = ['hf-title-0','hf-title-1']
+        .map(id => document.getElementById(id)).filter(Boolean);
+      titleFlowers.forEach(el => { el._vx=0; el._vy=0; el._ox=0; el._oy=0; });
+
+      let mx = -9999, my = -9999, inHero = false;
+
+      document.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        const r = heroEl.getBoundingClientRect();
+        inHero = e.clientY >= r.top && e.clientY <= r.bottom &&
+                 e.clientX >= r.left && e.clientX <= r.right;
+      });
+      document.addEventListener('mouseleave', () => { inHero = false; });
+
+      function step(el, spring, damp, maxOffset, radius, leanFactor) {
+        const rect = el.getBoundingClientRect();
+        const cx = rect.left + rect.width  / 2;
+        const cy = rect.top  + rect.height / 2;
+        const dx = mx - cx, dy = my - cy;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+
+        let tx = 0, ty = 0;
+        if (inHero && dist < radius && dist > 0.5) {
+          const s = (1 - dist / radius) * maxOffset;
+          tx = (dx / dist) * s;
+          ty = (dy / dist) * s;
+        }
+
+        el._vx += (tx - el._ox) * spring; el._vx *= damp;
+        el._vy += (ty - el._oy) * spring; el._vy *= damp;
+        el._ox += el._vx;
+        el._oy += el._vy;
+
+        // CSS individual properties compose cleanly with the parallax
+        // `transform: translate()` set by the existing mouse-parallax block
+        el.style.translate = `${el._ox.toFixed(2)}px ${el._oy.toFixed(2)}px`;
+        el.style.rotate    = `${(el._ox * leanFactor).toFixed(2)}deg`;
+      }
+
+      function springLoop() {
+        bgFlowers.forEach(el    => step(el, 0.075, 0.78, 12,  270, 0.48));
+        titleFlowers.forEach(el => step(el, 0.042, 0.84,  5,  340, 0.16));
+        requestAnimationFrame(springLoop);
+      }
+      springLoop();
+    }());
+
+
+    /* ================================================================
+       GARDEN HINT — "brush me"
+       Appears immediately on load. Fades out on first cursor entry
+       into the hero so it doesn't compete with the live interaction.
+    ================================================================ */
+    (function () {
+      document.getElementById('garden-hint').classList.add('visible');
+    }());
+
+
+    /* ================================================================
+       HERO PARALLAX — mouse move
+    ================================================================ */
+    (function () {
+      const grid    = document.getElementById('hero-grid');
+      const nav     = document.getElementById('main-nav');
+      const title   = document.getElementById('hero-title-wrap');
+      const footer  = document.getElementById('hero-footer');
+      const flowers = [
+        document.getElementById('hf-0'),
+        document.getElementById('hf-1'),
+        document.getElementById('hf-2'),
+        document.getElementById('hf-3'),
+        document.getElementById('hf-4'),
+        document.getElementById('hf-5'),
+        document.getElementById('hf-6'),
+      ];
+
+      document.addEventListener('mousemove', e => {
+        const x = e.clientX - window.innerWidth  / 2;
+        const y = e.clientY - window.innerHeight / 2;
+
+        if (grid)   grid.style.transform   = `translate(${x * -0.01}px, ${y * -0.01}px)`;
+        if (nav)    nav.style.transform    = `translate(${x *  0.012}px, ${y *  0.012}px)`;
+        if (title)  title.style.transform  = `translate(${x *  0.025}px, ${y *  0.025}px)`;
+        if (footer) footer.style.transform = `translate(${x *  0.008}px, ${y *  0.008}px)`;
+
+        flowers.forEach((el, i) => {
+          if (!el) return;
+          const depth = 0.02 + (i % 4) * 0.01;
+          el.style.transform = `translate(${x * -depth}px, ${y * -depth}px)`;
+        });
+      });
+    }());
+  </script>
+
+</body>
+</html>
