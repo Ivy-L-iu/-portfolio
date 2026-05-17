@@ -444,7 +444,7 @@
     .sr-1 { background: linear-gradient(148deg, #1A358C 0%, #3055C8 38%, #6080E8 72%, #A0B8F8 100%); }
     .sr-2 { background: linear-gradient(148deg, #0A4018 0%, #1A7030 42%, #38A050 78%, #80C890 100%); }
     .sr-3 { background: linear-gradient(148deg, #7A2000 0%, #B83C10 38%, #E06828 72%, #F5A060 100%); }
-    .sr-4 { background: linear-gradient(148deg, #1A2A1C 0%, #273F2C 38%, #4A6B34 68%, #C8A828 100%); }
+    .sr-4 { background: linear-gradient(148deg, #1C2A1C 0%, #2A3D1C 38%, #4A5A28 68%, #F1DA7E 100%); }
 
     .slide-img {
       position: absolute;
@@ -626,7 +626,7 @@
     .cs-hero-jw { background: linear-gradient(148deg, #1A358C 0%, #3055C8 45%, #6080E8 80%, #A0B8F8 100%); }
     .cs-hero-wf { background: linear-gradient(148deg, #0A4018 0%, #1A7030 45%, #38A050 80%, #80C890 100%); }
     .cs-hero-ln { background: linear-gradient(148deg, #7A2000 0%, #B83C10 45%, #E06828 80%, #F5A060 100%); }
-    .cs-hero-lm { background: linear-gradient(148deg, #1A2A1C 0%, #273F2C 42%, #4A6B34 72%, #C8A828 100%); }
+    .cs-hero-lm { background: linear-gradient(148deg, #1C2A1C 0%, #2A3D1C 42%, #4A5A28 72%, #F1DA7E 100%); }
 
     .cs-hero-inner { max-width: 900px; margin: 0 auto; padding: 0 72px; }
 
@@ -644,29 +644,30 @@
     }
 
     .cs-hero-title {
-      font-size: clamp(38px, 5vw, 62px);
+      font-family: var(--font-head);
+      font-size: clamp(42px, 5.5vw, 68px);
       font-weight: 800;
       color: #fff;
-      line-height: 1.06;
-      letter-spacing: -2px;
-      margin-bottom: 22px;
+      line-height: 1.04;
+      letter-spacing: -2.5px;
+      margin-bottom: 24px;
     }
 
     .cs-hero-sub {
       font-size: clamp(16px, 1.4vw, 19px);
       font-weight: 400;
-      color: rgba(255,255,255,0.78);
-      line-height: 1.55;
-      max-width: 540px;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.6;
+      max-width: 560px;
     }
 
-    .cs-content { background: var(--bg); padding-bottom: 100px; }
+    .cs-content { background: #fff; padding-bottom: 120px; }
 
     .cs-container { max-width: 860px; margin: 0 auto; padding: 0 72px; }
 
-    .cs-overview { padding: 64px 0 52px; border-bottom: 1px solid var(--border); }
+    .cs-overview { padding: 72px 0 56px; border-bottom: 1px solid var(--border); }
 
-    .cs-overview-text { font-size: clamp(17px, 1.5vw, 21px); font-weight: 400; line-height: 1.7; color: var(--text); }
+    .cs-overview-text { font-size: clamp(18px, 1.6vw, 22px); font-weight: 400; line-height: 1.75; color: #1a2e1a; }
 
     .cs-meta-row { display: flex; gap: 48px; flex-wrap: wrap; padding: 36px 0; border-bottom: 1px solid var(--border); }
 
@@ -675,7 +676,7 @@
     .cs-meta-val { font-size: 15px; font-weight: 500; color: var(--text); }
 
     .cs-img-ph {
-      border-radius: 16px;
+      border-radius: 20px;
       background: #d4e8d4;
       border: 1.5px dashed #a0c8a0;
       display: flex;
@@ -694,28 +695,47 @@
     .cs-img-row { display: flex; gap: 16px; margin-top: 32px; }
     .cs-img-row .cs-img-ph { flex: 1; margin-top: 0; }
 
-    img.cs-img { display: block; border-radius: 16px; margin-top: 48px; width: 100%; object-fit: cover; }
+    img.cs-img { display: block; border-radius: 20px; margin-top: 48px; width: 100%; object-fit: cover; box-shadow: 0 4px 28px rgba(0,40,0,0.10); }
     img.cs-img.lg { height: 460px; }
     img.cs-img.md { height: 290px; }
     img.cs-img.sm { height: 180px; }
     .cs-img-row img.cs-img { flex: 1; margin-top: 0; }
 
-    .cs-block { padding: 60px 0 0; }
+    .cs-block { padding: 68px 0 0; }
 
-    .cs-section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 14px; }
+    .cs-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #059669;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cs-section-label::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #059669;
+      flex-shrink: 0;
+    }
 
-    .cs-heading { font-size: clamp(22px, 2.4vw, 32px); font-weight: 700; line-height: 1.18; color: var(--text); letter-spacing: -0.4px; margin-bottom: 20px; }
+    .cs-heading { font-family: var(--font-head); font-size: clamp(24px, 2.6vw, 34px); font-weight: 700; line-height: 1.16; color: #0d1f0d; letter-spacing: -0.6px; margin-bottom: 20px; }
 
-    .cs-text { font-size: 16px; font-weight: 400; line-height: 1.78; color: #3A3A3A; margin-bottom: 14px; }
+    .cs-text { font-size: 16px; font-weight: 400; line-height: 1.82; color: #2a3a2a; margin-bottom: 16px; }
 
-    .cs-stats-row { display: flex; gap: 0; margin-top: 48px; border: 1.5px solid var(--border); border-radius: 18px; overflow: hidden; }
+    .cs-stats-row { display: flex; gap: 0; margin-top: 48px; border: 1.5px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,60,0,0.07); }
 
-    .cs-stat { flex: 1; padding: 32px 24px; border-right: 1.5px solid var(--border); background: #fff; }
+    .cs-stat { flex: 1; padding: 36px 28px; border-right: 1.5px solid var(--border); background: #fff; }
     .cs-stat:last-child { border-right: none; }
 
-    .cs-stat-num { font-size: clamp(28px, 3.2vw, 44px); font-weight: 800; color: var(--text); letter-spacing: -1.5px; line-height: 1; margin-bottom: 8px; }
+    .cs-stat-num { font-family: var(--font-head); font-size: clamp(32px, 3.5vw, 48px); font-weight: 800; color: var(--text); letter-spacing: -2px; line-height: 1; margin-bottom: 10px; }
 
-    .cs-stat-lbl { font-size: 13px; color: var(--muted); line-height: 1.45; }
+    .cs-stat-lbl { font-size: 13px; color: var(--muted); line-height: 1.5; }
 
     .cs-steps { margin-top: 32px; }
 
@@ -724,25 +744,25 @@
 
     .cs-step-num { flex-shrink: 0; font-size: 12px; font-weight: 600; color: var(--muted); padding-top: 2px; width: 24px; }
 
-    .cs-step-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .cs-step-title { font-family: var(--font-head); font-size: 16px; font-weight: 700; color: #0d1f0d; margin-bottom: 7px; }
 
-    .cs-step-desc { font-size: 15px; color: #555; line-height: 1.65; }
+    .cs-step-desc { font-size: 15px; color: #3a4a3a; line-height: 1.7; }
 
     .cs-findings { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
 
-    .cs-finding { display: flex; gap: 12px; font-size: 15px; color: #3A3A3A; line-height: 1.6; }
+    .cs-finding { display: flex; gap: 12px; font-size: 15px; color: #2a3a2a; line-height: 1.65; }
 
-    .cs-finding::before { content: '→'; color: var(--muted); flex-shrink: 0; margin-top: 1px; }
+    .cs-finding::before { content: '→'; color: #059669; flex-shrink: 0; margin-top: 1px; font-weight: 600; }
 
-    .cs-quote { margin-top: 40px; padding: 26px 32px; border-left: 3px solid var(--text); background: #fff; border-radius: 0 12px 12px 0; font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--text); font-style: italic; }
+    .cs-quote { margin-top: 44px; padding: 28px 36px; border-left: 3px solid #059669; background: rgba(5,150,105,0.04); border-radius: 0 16px 16px 0; font-size: 18px; font-weight: 500; line-height: 1.65; color: #0d1f0d; font-style: italic; }
 
-    .cs-nav-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 56px 0 0; border-top: 1px solid var(--border); margin-top: 72px; gap: 24px; }
+    .cs-nav-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 56px 0 0; border-top: 1px solid var(--border); margin-top: 80px; gap: 24px; }
 
     .cs-nav-link { font-family: var(--font); text-decoration: none; display: flex; flex-direction: column; gap: 4px; }
 
     .cs-nav-lbl { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
 
-    .cs-nav-title { font-size: 17px; font-weight: 700; color: var(--text); transition: opacity 0.2s; }
+    .cs-nav-title { font-family: var(--font-head); font-size: 17px; font-weight: 700; color: var(--text); transition: opacity 0.2s; }
 
     .cs-nav-link:hover .cs-nav-title { opacity: 0.6; }
 
